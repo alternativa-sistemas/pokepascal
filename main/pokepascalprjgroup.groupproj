@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{5690963E-04E7-44C9-8A09-C1711AF97DAA}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="pokepascal.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\tests\pokepascalTests.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="pokepascal">
+        <MSBuild Projects="pokepascal.dproj"/>
+    </Target>
+    <Target Name="pokepascal:Clean">
+        <MSBuild Projects="pokepascal.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="pokepascal:Make">
+        <MSBuild Projects="pokepascal.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="pokepascalTests">
+        <MSBuild Projects="..\tests\pokepascalTests.dproj"/>
+    </Target>
+    <Target Name="pokepascalTests:Clean">
+        <MSBuild Projects="..\tests\pokepascalTests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="pokepascalTests:Make">
+        <MSBuild Projects="..\tests\pokepascalTests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="pokepascal;pokepascalTests"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="pokepascal:Clean;pokepascalTests:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="pokepascal:Make;pokepascalTests:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
