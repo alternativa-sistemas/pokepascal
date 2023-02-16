@@ -4,53 +4,82 @@ interface
 
 uses
   System.Generics.Collections,
-  PokeAPI.Berry;
+  PokeAPI.Berry,
+  REST.Client;
 
 type
   IPokeAPI = interface
   ['{05357B51-A62A-4C56-9816-D33CEB371B3A}']
-    function GetBerries: IBerriesGETResponse;
+    function GetBerries(const Limit: Integer = -1;
+      const Offset: Integer = -1): IBerriesGETResponse; overload;
+    function GetBerries(const URL: string): IBerriesGETResponse; overload;
   end;
 
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
+  private
+    BaseURL: string;
+    Client: TRESTClient;
+    Request: TRESTRequest;
+    Response: TRESTResponse;
   public
+    constructor Create;
+    destructor Destroy; override;
     function New: IPokeAPI;
-    function GetBerries: IBerriesGETResponse;
+    function GetBerries(const Limit: Integer = -1;
+      const Offset: Integer = -1): IBerriesGETResponse; overload;
+    function GetBerries(const URL: string): IBerriesGETResponse; overload;
   end;
 
 implementation
 
 uses
-  REST.Client, REST.Types, REST.Json;
+  REST.Types, REST.Json, SysUtils;
 
 { TPokeAPI }
 
-function TPokeAPI.GetBerries: IBerriesGETResponse;
-var
-  Client: TRESTClient;
-  Request: TRESTRequest;
-  Response: TRESTResponse;
-  BerriesListResponse: TBerriesListResponse;
+constructor TPokeAPI.Create;
 begin
-  Client := TRESTClient.Create('https://pokeapi.co/api/v2/');
+  inherited;
+  BaseURL := 'https://pokeapi.co/api/v2/';
+  Client := TRESTClient.Create(BaseURL);
   Request := TRESTRequest.Create(nil);
   Response := TRESTResponse.Create(nil);
-  try
-    Request.Client := Client;
-    Request.Response := Response;
-    Request.Accept := 'application/json';
-    Request.Method := TRESTRequestMethod.rmGET;
-    Request.Resource := 'berry';
-    Request.Execute;
+  Request.Client := Client;
+  Request.Response := Response;
+  Request.Accept := 'application/json';
+end;
 
-    BerriesListResponse := TJson.JsonToObject<TBerriesListResponse>(Response.JSONText);
+destructor TPokeAPI.Destroy;
+begin
+  Client.Free;
+  Request.Free;
+  Response.Free;
+end;
 
-    Result := BerriesListResponse.New;
-  finally
-    Client.Free;
-    Request.Free;
-    Response.Free;
+function TPokeAPI.GetBerries(const Limit, Offset: Integer): IBerriesGETResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'berry';
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
   end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+
+  Result := TJson.JsonToObject<TBerriesListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetBerries(const URL: string): IBerriesGETResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TBerriesListResponse>(Response.JSONText).New;
 end;
 
 function TPokeAPI.New: IPokeAPI;

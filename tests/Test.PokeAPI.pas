@@ -11,13 +11,14 @@ type
   TestTPokeAPI = class(TTestCase)
   strict private
     FPokeAPI: TPokeAPI;
-    Aux: IPokeAPI;
+    PokeAPI: IPokeAPI;
   private
   public
     procedure SetUp; override;
     procedure TearDown; override;
   published
-    procedure TestBerriesGET;
+    procedure TestBerriesGET1;
+    procedure TestBerriesGET2;
     procedure TestNew;
   end;
 
@@ -31,27 +32,37 @@ uses
 procedure TestTPokeAPI.SetUp;
 begin
   FPokeAPI := TPokeAPI.Create;
-  Aux := FPokeAPI.New;
+  PokeAPI := FPokeAPI.New;
 end;
 
 procedure TestTPokeAPI.TearDown;
 begin
-  Aux := nil;
+  PokeAPI := nil;
 end;
 
-procedure TestTPokeAPI.TestBerriesGET;
+procedure TestTPokeAPI.TestBerriesGET1;
 var
   Berries: IBerriesGETResponse;
 begin
-  Berries := Aux.GetBerries;
+  Berries := PokeAPI.GetBerries;
   CheckEquals(Berries.results.Count, 20, 'results.Count incorreto');
   CheckEquals(Berries.results.Item(0).name, 'cheri', 'Primeiro cherry incorreto');
+end;
 
+procedure TestTPokeAPI.TestBerriesGET2;
+var
+  Berries: IBerriesGETResponse;
+begin
+  Berries := PokeAPI.GetBerries;
+  while Berries.next <> '' do
+  begin
+    Berries := PokeAPI.GetBerries(Berries.next);
+  end;
 end;
 
 procedure TestTPokeAPI.TestNew;
 begin
-  CheckNotNull(Aux, 'New null');
+  CheckNotNull(PokeAPI, 'New null');
 end;
 
 initialization
