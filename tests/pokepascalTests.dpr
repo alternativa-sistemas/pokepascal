@@ -19,7 +19,10 @@ uses
   Test.PokeAPI in 'Test.PokeAPI.pas',
   PokeAPI.Base in '..\src\PokeAPI.Base.pas',
   PokeAPI.Berry in '..\src\PokeAPI.Berry.pas',
-  PokeAPI in '..\src\PokeAPI.pas';
+  PokeAPI in '..\src\PokeAPI.pas',
+  PokeAPI.Base.Int in '..\src\PokeAPI.Base.Int.pas',
+  PokeAPI.Berry.Int in '..\src\PokeAPI.Berry.Int.pas',
+  PokeAPI.Int in '..\src\PokeAPI.Int.pas';
 
 {$R *.RES}
 

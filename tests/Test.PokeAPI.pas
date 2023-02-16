@@ -6,7 +6,7 @@ uses
   TestFramework
 , PokeAPI
 , PokeAPI.Base
-;
+, PokeAPI.Int;
 
 type
   TestTPokeAPI = class(TTestCase)
@@ -27,7 +27,7 @@ type
 implementation
 
 uses
-  PokeAPI.Berry;
+  PokeAPI.Berry, PokeAPI.Berry.Int, PokeAPI.Base.Int;
 
 { TestTPokeAPI }
 
@@ -47,8 +47,8 @@ var
   Berries: IBerriesGETResponse;
 begin
   Berries := PokeAPI.GetBerries;
-  CheckEquals(Berries.results.Count, 20, 'results.Count incorreto');
-  CheckEquals(Berries.results.Item(0).name, 'cheri', 'Primeiro cherry incorreto');
+  CheckEquals(20, Berries.results.Count, 'results.Count incorreto');
+  CheckEquals('cheri', Berries.results.Item(0).name, 'Primeiro cherry incorreto');
 end;
 
 procedure TestTPokeAPI.TestBerriesGET2;
@@ -64,9 +64,14 @@ end;
 
 procedure TestTPokeAPI.TestBerryGETIdOrName1;
 var
-  Berry: INameAndUrl;
+  Berry: IBerry;
 begin
   Berry := PokeAPI.GetBerry(1);
+  CheckEquals(1, Berry.id, 'incorrect id for id 1');
+  CheckEquals('cheri', Berry.name, 'incorrect name for id 1');
+  CheckEquals('soft', Berry.firmness.name, 'incorrect firmness.name for id 1');
+  CheckEquals('spicy', Berry.flavors.Item(0).flavor.name, 'incorrect flavors.Item(0).flavor.name for id 1');
+  CheckEquals(5, Berry.flavors.Count, 'incorrect flavors.Count for id 1');
 end;
 
 procedure TestTPokeAPI.TestNew;

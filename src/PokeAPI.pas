@@ -4,19 +4,11 @@ interface
 
 uses
   System.Generics.Collections,
-  PokeAPI.Berry,
+  PokeAPI.Berry.Int,
   REST.Client,
-  PokeAPI.Base;
+  PokeAPI.Base, PokeAPI.Int, PokeAPI.Base.Int;
 
 type
-  IPokeAPI = interface
-  ['{05357B51-A62A-4C56-9816-D33CEB371B3A}']
-    function GetBerries(const Limit: Integer = -1;
-      const Offset: Integer = -1): IBerriesGETResponse; overload;
-    function GetBerries(const URL: string): IBerriesGETResponse; overload;
-    function GetBerry(const Id: Integer): INameAndUrl;
-  end;
-
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
   private
     BaseURL: string;
@@ -30,13 +22,13 @@ type
     function GetBerries(const Limit: Integer = -1;
       const Offset: Integer = -1): IBerriesGETResponse; overload;
     function GetBerries(const URL: string): IBerriesGETResponse; overload;
-    function GetBerry(const Id: Integer): INameAndUrl;
+    function GetBerry(const Id: Integer): IBerry;
   end;
 
 implementation
 
 uses
-  REST.Types, REST.Json, SysUtils;
+  REST.Types, REST.Json, SysUtils, PokeAPI.Berry;
 
 { TPokeAPI }
 
@@ -85,13 +77,13 @@ begin
   Result := TJson.JsonToObject<TBerriesListResponse>(Response.JSONText).New;
 end;
 
-function TPokeAPI.GetBerry(const Id: Integer): INameAndUrl;
+function TPokeAPI.GetBerry(const Id: Integer): IBerry;
 begin
   Request.Method := TRESTRequestMethod.rmGET;
   Request.Resource := 'berry/' + IntToStr(Id);
   Client.BaseURL := BaseURL;
   Request.Execute;
-  Result := TJson.JsonToObject<TNameAndUrl>(Response.JSONText).New;
+  Result := TJson.JsonToObject<TBerry>(Response.JSONText).New;
 end;
 
 function TPokeAPI.New: IPokeAPI;
