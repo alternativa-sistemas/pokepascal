@@ -5,6 +5,7 @@ interface
 uses
   TestFramework
 , PokeAPI
+, PokeAPI.Base
 ;
 
 type
@@ -19,6 +20,7 @@ type
   published
     procedure TestBerriesGET1;
     procedure TestBerriesGET2;
+    procedure TestBerryGETIdOrName1;
     procedure TestNew;
   end;
 
@@ -58,6 +60,13 @@ begin
   begin
     Berries := PokeAPI.GetBerries(Berries.next);
   end;
+end;
+
+procedure TestTPokeAPI.TestBerryGETIdOrName1;
+var
+  Berry: INameAndUrl;
+begin
+  Berry := PokeAPI.GetBerry(1);
 end;
 
 procedure TestTPokeAPI.TestNew;

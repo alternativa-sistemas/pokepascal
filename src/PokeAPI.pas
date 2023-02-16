@@ -5,7 +5,8 @@ interface
 uses
   System.Generics.Collections,
   PokeAPI.Berry,
-  REST.Client;
+  REST.Client,
+  PokeAPI.Base;
 
 type
   IPokeAPI = interface
@@ -13,6 +14,7 @@ type
     function GetBerries(const Limit: Integer = -1;
       const Offset: Integer = -1): IBerriesGETResponse; overload;
     function GetBerries(const URL: string): IBerriesGETResponse; overload;
+    function GetBerry(const Id: Integer): INameAndUrl;
   end;
 
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
@@ -28,6 +30,7 @@ type
     function GetBerries(const Limit: Integer = -1;
       const Offset: Integer = -1): IBerriesGETResponse; overload;
     function GetBerries(const URL: string): IBerriesGETResponse; overload;
+    function GetBerry(const Id: Integer): INameAndUrl;
   end;
 
 implementation
@@ -80,6 +83,15 @@ begin
   Client.BaseURL := URL;
   Request.Execute;
   Result := TJson.JsonToObject<TBerriesListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetBerry(const Id: Integer): INameAndUrl;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'berry/' + IntToStr(Id);
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TNameAndUrl>(Response.JSONText).New;
 end;
 
 function TPokeAPI.New: IPokeAPI;

@@ -3,6 +3,24 @@ unit PokeAPI.Base;
 interface
 
 type
+  INameAndUrl = interface
+  ['{CF82ED1A-18A7-4CF0-90FC-FB5197AA4505}']
+    function Getname: string;
+    function Geturl: string;
+    procedure Setname(const Value: string);
+    procedure Seturl(const Value: string);
+    property name: string read Getname write Setname;
+    property url: string read Geturl write Seturl;
+  end;
+
+  TArrayINameAndUrl = array of INameAndUrl;
+
+  INameAndUrlList = interface
+  ['{64DDC5D3-30F9-45BC-82B5-F4593F69F15C}']
+    function Count: Integer;
+    function Item(const Index: Integer): INameAndUrl;
+  end;
+
   IListResponse = interface
     procedure Setcount(const Value: Integer);
     procedure Setnext(const Value: string);
@@ -32,7 +50,62 @@ type
     property previous: string read Getprevious write Setprevious;
   end;
 
+  TNameAndUrl = class(TInterfacedObject, INameAndUrl)
+  private
+    Fname: string;
+    Furl: string;
+    function Getname: string;
+    function Geturl: string;
+    procedure Setname(const Value: string);
+    procedure Seturl(const Value: string);
+  public
+    function New: INameAndUrl;
+  published
+    property name: string read Getname write Setname;
+    property url: string read Geturl write Seturl;
+  end;
+
+  TArrayNameAndUrl = array of TNameAndUrl;
+
+  TNameAndUrlList = class(TInterfacedObject, INameAndUrlList)
+  private
+    FArr: TArrayINameAndUrl;
+  public
+    constructor Create(const Arr: TArrayNameAndUrl); overload;
+    constructor Create(const Arr: TArrayINameAndUrl); overload;
+    function New: INameAndUrlList;
+    function Count: Integer;
+    function Item(const Index: Integer): INameAndUrl;
+  end;
+
 implementation
+
+{ TNameAndUrl }
+
+function TNameAndUrl.Getname: string;
+begin
+  Result := Fname;
+end;
+
+function TNameAndUrl.Geturl: string;
+begin
+  Result := Furl;
+end;
+
+function TNameAndUrl.New: INameAndUrl;
+begin
+  Result := Self;
+end;
+
+procedure TNameAndUrl.Setname(const Value: string);
+begin
+  Fname := Value;
+end;
+
+procedure TNameAndUrl.Seturl(const Value: string);
+begin
+  Furl := Value;
+end;
 
 { TListResponse }
 
@@ -64,6 +137,41 @@ end;
 procedure TListResponse.Setprevious(const Value: string);
 begin
   Fprevious := Value;
+end;
+
+{ TNameAndUrlList }
+
+function TNameAndUrlList.Count: Integer;
+begin
+  Result := Length(FArr);
+end;
+
+constructor TNameAndUrlList.Create(const Arr: TArrayNameAndUrl);
+var
+  ArrInt: TArrayINameAndUrl;
+  I: Integer;
+begin
+  SetLength(ArrInt, Length(Arr));
+  for I := 0 to High(Arr) do
+  begin
+    ArrInt[I] := Arr[I].New;
+  end;
+  Create(ArrInt);
+end;
+
+constructor TNameAndUrlList.Create(const Arr: TArrayINameAndUrl);
+begin
+  FArr := Arr;
+end;
+
+function TNameAndUrlList.Item(const Index: Integer): INameAndUrl;
+begin
+  Result := FArr[Index];
+end;
+
+function TNameAndUrlList.New: INameAndUrlList;
+begin
+  Result := Self;
 end;
 
 end.
