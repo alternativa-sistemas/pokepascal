@@ -6,23 +6,6 @@ uses
   PokeAPI.Base.Int;
 
 type
-  TListResponse = class(TInterfacedObject, IListResponse)
-  private
-    Fcount: Integer;
-    Fnext: string;
-    Fprevious: string;
-    procedure Setcount(const Value: Integer);
-    procedure Setnext(const Value: string);
-    procedure Setprevious(const Value: string);
-    function Getcount: Integer;
-    function Getnext: string;
-    function Getprevious: string;
-  public
-    property count: Integer read Getcount write Setcount;
-    property next: string read Getnext write Setnext;
-    property previous: string read Getprevious write Setprevious;
-  end;
-
   TNameAndUrl = class(TInterfacedObject, INameAndUrl)
   private
     Fname: string;
@@ -49,6 +32,30 @@ type
     function New: INameAndUrlList;
     function Count: Integer;
     function Item(const Index: Integer): INameAndUrl;
+  end;
+
+  TListResponse = class(TInterfacedObject, IListResponse)
+  private
+    Fcount: Integer;
+    Fnext: string;
+    Fprevious: string;
+    FresultsInt: INameAndUrlList;
+    Fresults: TArrayNameAndUrl;
+    procedure Setcount(const Value: Integer);
+    procedure Setnext(const Value: string);
+    procedure Setprevious(const Value: string);
+    procedure Setresults(const Value: INameAndUrlList);
+    function Getcount: Integer;
+    function Getnext: string;
+    function Getprevious: string;
+    function Getresults: INameAndUrlList;
+  public
+    function New: IListResponse;
+  published
+    property count: Integer read Getcount write Setcount;
+    property next: string read Getnext write Setnext;
+    property previous: string read Getprevious write Setprevious;
+    property results: TArrayNameAndUrl read Fresults write Fresults;
   end;
 
 implementation
@@ -97,6 +104,20 @@ begin
   Result := Fprevious;
 end;
 
+function TListResponse.Getresults: INameAndUrlList;
+begin
+  if FresultsInt = nil then
+  begin
+    FresultsInt := TNameAndUrlList.Create(Fresults).New;
+  end;
+  Result := FresultsInt;
+end;
+
+function TListResponse.New: IListResponse;
+begin
+  Result := Self;
+end;
+
 procedure TListResponse.Setcount(const Value: Integer);
 begin
   Fcount := Value;
@@ -110,6 +131,11 @@ end;
 procedure TListResponse.Setprevious(const Value: string);
 begin
   Fprevious := Value;
+end;
+
+procedure TListResponse.Setresults(const Value: INameAndUrlList);
+begin
+  FresultsInt := Value;
 end;
 
 { TNameAndUrlList }

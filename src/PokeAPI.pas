@@ -20,9 +20,15 @@ type
     destructor Destroy; override;
     function New: IPokeAPI;
     function GetBerries(const Limit: Integer = -1;
-      const Offset: Integer = -1): IBerriesGETResponse; overload;
-    function GetBerries(const URL: string): IBerriesGETResponse; overload;
-    function GetBerry(const Id: Integer): IBerry;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetBerries(const URL: string): IListResponse; overload;
+    function GetBerry(const Id: Integer): IBerry; overload;
+    function GetBerry(const Name: string): IBerry; overload;
+    function GetBerriesFirmness(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetBerriesFirmness(const URL: string): IListResponse; overload;
+    function GetBerryFirmness(const Id: Integer): IBerryFirmness; overload;
+    function GetBerryFirmness(const Name: string): IBerryFirmness; overload;
   end;
 
 implementation
@@ -51,7 +57,7 @@ begin
   Response.Free;
 end;
 
-function TPokeAPI.GetBerries(const Limit, Offset: Integer): IBerriesGETResponse;
+function TPokeAPI.GetBerries(const Limit, Offset: Integer): IListResponse;
 begin
   Request.Method := TRESTRequestMethod.rmGET;
   Request.Resource := 'berry';
@@ -65,25 +71,71 @@ begin
   end;
   Request.Execute;
 
-  Result := TJson.JsonToObject<TBerriesListResponse>(Response.JSONText).New;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
 end;
 
-function TPokeAPI.GetBerries(const URL: string): IBerriesGETResponse;
+function TPokeAPI.GetBerries(const URL: string): IListResponse;
 begin
   Request.Method := TRESTRequestMethod.rmGET;
   Request.Resource := '';
   Client.BaseURL := URL;
   Request.Execute;
-  Result := TJson.JsonToObject<TBerriesListResponse>(Response.JSONText).New;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetBerriesFirmness(const Limit,
+  Offset: Integer): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'berry-firmness';
+  Client.BaseURL := BaseURL;
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
+  end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetBerriesFirmness(const URL: string): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetBerry(const Name: string): IBerry;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'berry/' + Name;
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TBerry>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetBerryFirmness(const Id: Integer): IBerryFirmness;
+begin
+  Result := GetBerryFirmness(IntToStr(Id));
+end;
+
+function TPokeAPI.GetBerryFirmness(const Name: string): IBerryFirmness;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'berry-firmness/' + Name;
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TBerryFirmness>(Response.JSONText).New;
 end;
 
 function TPokeAPI.GetBerry(const Id: Integer): IBerry;
 begin
-  Request.Method := TRESTRequestMethod.rmGET;
-  Request.Resource := 'berry/' + IntToStr(Id);
-  Client.BaseURL := BaseURL;
-  Request.Execute;
-  Result := TJson.JsonToObject<TBerry>(Response.JSONText).New;
+  Result := GetBerry(IntToStr(Id));
 end;
 
 function TPokeAPI.New: IPokeAPI;
