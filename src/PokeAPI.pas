@@ -12,7 +12,7 @@ uses
   PokeAPI.BerryFlavor.Int,
   PokeAPI.ContestType.Int,
   PokeAPI.ContestEffect.Int,
-  PokeAPI.SuperContestEffect.Int;
+  PokeAPI.SuperContestEffect.Int, PokeAPI.EncounterMethod.Int;
 
 type
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
@@ -53,6 +53,11 @@ type
       const Offset: Integer = -1): IListResponse; overload;
     function GetSuperContestEffects(const URL: string): IListResponse; overload;
     function GetSuperContestEffect(const Id: Integer): ISuperContestEffect;
+    function GetEncounterMethods(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetEncounterMethods(const URL: string): IListResponse; overload;
+    function GetEncounterMethod(const Id: Integer): IEncounterMethod; overload;
+    function GetEncounterMethod(const Name: string): IEncounterMethod; overload;
   end;
 
 implementation
@@ -66,7 +71,7 @@ uses
   PokeAPI.BerryFlavor,
   PokeAPI.ContestType,
   PokeAPI.ContestEffect,
-  PokeAPI.SuperContestEffect;
+  PokeAPI.SuperContestEffect, PokeAPI.EncounterMethod;
 
 { TPokeAPI }
 
@@ -322,6 +327,47 @@ begin
   Client.BaseURL := BaseURL;
   Request.Execute;
   Result := TJson.JsonToObject<TSuperContestEffect>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetEncounterMethods(const Limit: Integer = -1;
+  const Offset: Integer = -1): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'encounter-method';
+  Client.BaseURL := BaseURL;
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
+  end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetEncounterMethods(const URL: string): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetEncounterMethod(const Id: Integer): IEncounterMethod;
+begin
+  Result := GetEncounterMethod(IntToStr(Id));
+end;
+
+function TPokeAPI.GetEncounterMethod(const Name: string): IEncounterMethod;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'encounter-method/' + Name;
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TEncounterMethod>(Response.JSONText).New;
 end;
 
 function TPokeAPI.New: IPokeAPI;
