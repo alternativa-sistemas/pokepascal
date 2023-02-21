@@ -18,6 +18,11 @@ type
     function GetBerriesFirmness(const URL: string): IListResponse; overload;
     function GetBerryFirmness(const Id: Integer): IBerryFirmness; overload;
     function GetBerryFirmness(const Name: string): IBerryFirmness; overload;
+    function GetBerriesFlavor(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetBerriesFlavor(const URL: string): IListResponse; overload;
+    function GetBerryFlavor(const Id: Integer): IBerryFlavor; overload;
+    function GetBerryFlavor(const Name: string): IBerryFlavor; overload;
   end;
 
 implementation

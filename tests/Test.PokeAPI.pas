@@ -26,6 +26,10 @@ type
     procedure TestBerriesFirmnessGET2;
     procedure TestBerryFirmnessGETIdOrName1;
     procedure TestBerryFirmnessGETIdOrName2;
+    procedure TestBerriesFlavorGET1;
+    procedure TestBerriesFlavorGET2;
+    procedure TestBerryFlavorGETIdOrName1;
+    procedure TestBerryFlavorGETIdOrName2;
     procedure TestNew;
   end;
 
@@ -129,6 +133,48 @@ begin
   CheckEquals('soft', Berry.firmness.name, 'incorrect firmness.name for id 1');
   CheckEquals('spicy', Berry.flavors.Item(0).flavor.name, 'incorrect flavors.Item(0).flavor.name for id 1');
   CheckEquals(5, Berry.flavors.Count, 'incorrect flavors.Count for id 1');
+end;
+
+procedure TestTPokeAPI.TestBerriesFlavorGET1;
+var
+  BerryFlavors: IListResponse;
+begin
+  BerryFlavors := PokeAPI.GetBerriesFlavor;
+  CheckEquals(5, BerryFlavors.results.Count, 'results.Count incorreto');
+  CheckEquals('spicy', BerryFlavors.results.Item(0).name, 'Primeiro cherry incorreto');
+end;
+
+procedure TestTPokeAPI.TestBerriesFlavorGET2;
+var
+  BerryFlavors: IListResponse;
+begin
+  BerryFlavors := PokeAPI.GetBerriesFlavor;
+  while BerryFlavors.next <> '' do
+  begin
+    BerryFlavors := PokeAPI.GetBerries(BerryFlavors.next);
+  end;
+end;
+
+procedure TestTPokeAPI.TestBerryFlavorGETIdOrName1;
+var
+  Berry: IBerryFlavor;
+begin
+  Berry := PokeAPI.GetBerryFlavor(1);
+  CheckEquals(1, Berry.id, 'wrong id for id 1');
+  CheckEquals('spicy', Berry.name, 'wrong name for id 1');
+  CheckEquals(10, Berry.berries.Item(0).potency, 'wrong berries.Item(0).potency for id 1');
+  CheckEquals('cool', Berry.contest_type.name, 'wrong contest_type.name for id 1');
+end;
+
+procedure TestTPokeAPI.TestBerryFlavorGETIdOrName2;
+var
+  Berry: IBerryFlavor;
+begin
+  Berry := PokeAPI.GetBerryFlavor('spicy');
+  CheckEquals(1, Berry.id, 'wrong id for spicy');
+  CheckEquals('spicy', Berry.name, 'wrong name for spicy');
+  CheckEquals(10, Berry.berries.Item(0).potency, 'wrong berries.Item(0).potency for spicy');
+  CheckEquals('cool', Berry.contest_type.name, 'wrong contest_type.name for spicy');
 end;
 
 procedure TestTPokeAPI.TestNew;

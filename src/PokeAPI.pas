@@ -29,6 +29,11 @@ type
     function GetBerriesFirmness(const URL: string): IListResponse; overload;
     function GetBerryFirmness(const Id: Integer): IBerryFirmness; overload;
     function GetBerryFirmness(const Name: string): IBerryFirmness; overload;
+    function GetBerriesFlavor(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetBerriesFlavor(const URL: string): IListResponse; overload;
+    function GetBerryFlavor(const Id: Integer): IBerryFlavor; overload;
+    function GetBerryFlavor(const Name: string): IBerryFlavor; overload;
   end;
 
 implementation
@@ -131,6 +136,47 @@ begin
   Client.BaseURL := BaseURL;
   Request.Execute;
   Result := TJson.JsonToObject<TBerryFirmness>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetBerriesFlavor(const Limit: Integer = -1;
+  const Offset: Integer = -1): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'berry-flavor';
+  Client.BaseURL := BaseURL;
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
+  end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetBerriesFlavor(const URL: string): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetBerryFlavor(const Id: Integer): IBerryFlavor;
+begin
+  Result := GetBerryFlavor(IntToStr(Id));
+end;
+
+function TPokeAPI.GetBerryFlavor(const Name: string): IBerryFlavor;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'berry-flavor/' + Name;
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TBerryFlavor>(Response.JSONText).New;
 end;
 
 function TPokeAPI.GetBerry(const Id: Integer): IBerry;
