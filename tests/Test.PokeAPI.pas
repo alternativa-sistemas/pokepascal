@@ -235,7 +235,7 @@ var
   ContestEffects: IListResponse;
 begin
   ContestEffects := PokeAPI.GetContestEffects;
-  CheckEquals(5, ContestEffects.results.Count, 'incorrect results.Count');
+  CheckEquals(20, ContestEffects.results.Count, 'incorrect results.Count');
   CheckEquals('', ContestEffects.results.Item(0).name, 'first contest effect incorrect');
 end;
 
@@ -256,7 +256,7 @@ var
 begin
   ContestEffect := PokeAPI.GetContestEffect(1);
   CheckEquals(1, ContestEffect.id, 'wrong id for id 1');
-  CheckEquals(5, ContestEffect.appeal, 'wrong appeal for id 1');
+  CheckEquals(4, ContestEffect.appeal, 'wrong appeal for id 1');
   CheckEquals('Gives a high number of appeal points wth no other effects.', ContestEffect.effect_entries.Item(0).effect, 'wrong effect_entries.Items(0).effect for id 1');
   CheckEquals('A highly appealing move.', ContestEffect.flavor_text_entries.Item(0).flavor_text, 'wrong flavor_text_entries.Items(0).flavor_text for id 1');
 end;
@@ -266,7 +266,7 @@ var
   SuperContestEffects: IListResponse;
 begin
   SuperContestEffects := PokeAPI.GetSuperContestEffects;
-  CheckEquals(5, SuperContestEffects.results.Count, 'incorrect results.Count');
+  CheckEquals(20, SuperContestEffects.results.Count, 'incorrect results.Count');
   CheckEquals('', SuperContestEffects.results.Item(0).name, 'first contest effect incorrect');
 end;
 

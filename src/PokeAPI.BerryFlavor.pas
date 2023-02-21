@@ -12,13 +12,11 @@ type
     FberryInt: INameAndUrl;
     Fberry: TNameAndUrl;
     function Getpotency: Integer;
-    procedure Setpotency(const Value: Integer);
     function Getberry: INameAndUrl;
-    procedure Setberry(const Value: INameAndUrl);
   public
     function New: IBerryPotency;
   published
-    property potency: Integer read Getpotency write Setpotency;
+    property potency: Integer read Getpotency;
     property berry: TNameAndUrl read Fberry write Fberry;
   end;
 
@@ -46,20 +44,15 @@ type
     FnamesInt: INameList;
     Fnames: TArrayName;
     function Getid: Integer;
-    procedure Setid(const Value: Integer);
     function Getname: string;
-    procedure Setname(const Value: string);
     function Getberries: IBerryPotencyList;
-    procedure Setberries(const Value: IBerryPotencyList);
     function Getcontest_type: INameAndUrl;
-    procedure Setcontest_type(const Value: INameAndUrl);
     function Getnames: INameList;
-    procedure Setnames(const Value: INameList);
   public
     function New: IBerryFlavor;
   published
-    property id: Integer read Getid write Setid;
-    property name: string read Getname write Setname;
+    property id: Integer read Getid;
+    property name: string read Getname;
     property berries: TArrayBerryPotency read Fberries write Fberries;
     property contest_type: TNameAndUrl read Fcontest_type write Fcontest_type;
     property names: TArrayName read Fnames write Fnames;
@@ -74,11 +67,6 @@ begin
   Result := Fpotency;
 end;
 
-procedure TBerryPotency.Setpotency(const Value: Integer);
-begin
-  Fpotency := Value;
-end;
-
 function TBerryPotency.Getberry: INameAndUrl;
 begin
   if FberryInt = nil then
@@ -86,11 +74,6 @@ begin
     FberryInt := Fberry.New;
   end;
   Result := FberryInt;
-end;
-
-procedure TBerryPotency.Setberry(const Value: INameAndUrl);
-begin
-  FberryInt := Value;
 end;
 
 function TBerryPotency.New: IBerryPotency;
@@ -140,19 +123,9 @@ begin
   Result := Fid;
 end;
 
-procedure TBerryFlavor.Setid(const Value: Integer);
-begin
-  Fid := Value;
-end;
-
 function TBerryFlavor.Getname: string;
 begin
   Result := Fname;
-end;
-
-procedure TBerryFlavor.Setname(const Value: string);
-begin
-  Fname := Value;
 end;
 
 function TBerryFlavor.Getberries: IBerryPotencyList;
@@ -164,11 +137,6 @@ begin
   Result := FberriesInt;
 end;
 
-procedure TBerryFlavor.Setberries(const Value: IBerryPotencyList);
-begin
-  FberriesInt := Value;
-end;
-
 function TBerryFlavor.Getcontest_type: INameAndUrl;
 begin
   if Fcontest_typeInt = nil then
@@ -178,11 +146,6 @@ begin
   Result := Fcontest_typeInt;
 end;
 
-procedure TBerryFlavor.Setcontest_type(const Value: INameAndUrl);
-begin
-  Fcontest_typeInt := Value;
-end;
-
 function TBerryFlavor.Getnames: INameList;
 begin
   if FnamesInt = nil then
@@ -190,11 +153,6 @@ begin
     FnamesInt := TNameList.Create(Fnames).New;
   end;
   Result := FnamesInt;
-end;
-
-procedure TBerryFlavor.Setnames(const Value: INameList);
-begin
-  FnamesInt := Value;
 end;
 
 function TBerryFlavor.New: IBerryFlavor;

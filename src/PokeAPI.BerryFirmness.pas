@@ -15,20 +15,16 @@ type
     FnamesInt: INameList;
     Fnames: TArrayName;
     function Getberries: INameAndUrlList;
-    procedure Setberries(const Value: INameAndUrlList);
     function Getid: Integer;
-    procedure Setid(const Value: Integer);
     function Getname: string;
-    procedure Setname(const Value: string);
     function Getnames: INameList;
-    procedure Setnames(const Value: INameList);
   public
     function New: IBerryFirmness;
   published
     property berries: TArrayNameAndUrl read Fberries write Fberries;
-    property id: Integer read Getid write Setid;
-    property name: string read Getname write Setname;
-    property names: TArrayName read Fnames write Fnames;
+    property id: Integer read Getid;
+    property name: string read Getname;
+    property names: TArrayName read Fnames;
   end;
 
 implementation
@@ -66,26 +62,6 @@ end;
 function TBerryFirmness.New: IBerryFirmness;
 begin
   Result := Self;
-end;
-
-procedure TBerryFirmness.Setberries(const Value: INameAndUrlList);
-begin
-  FberriesInt := Value;
-end;
-
-procedure TBerryFirmness.Setid(const Value: Integer);
-begin
-  Fid := Value;
-end;
-
-procedure TBerryFirmness.Setname(const Value: string);
-begin
-  Fname := Value;
-end;
-
-procedure TBerryFirmness.Setnames(const Value: INameList);
-begin
-  FnamesInt := Value;
 end;
 
 end.

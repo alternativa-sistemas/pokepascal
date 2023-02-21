@@ -12,13 +12,11 @@ type
     Furl: string;
     function Getname: string;
     function Geturl: string;
-    procedure Setname(const Value: string);
-    procedure Seturl(const Value: string);
   public
     function New: INameAndUrl;
   published
-    property name: string read Getname write Setname;
-    property url: string read Geturl write Seturl;
+    property name: string read Getname;
+    property url: string read Geturl;
   end;
 
   TArrayNameAndUrl = array of TNameAndUrl;
@@ -39,7 +37,6 @@ type
     FlanguageInt: INameAndUrl;
     Flanguage: TNameAndUrl;
     function Getlanguage: INameAndUrl;
-    procedure Setlanguage(const Value: INameAndUrl);
   published
     property language: TNameAndUrl read Flanguage write Flanguage;
   end;
@@ -51,15 +48,13 @@ type
     Fname: string;
     Fcolor: string;
     function Getlanguage: INameAndUrl;
-    procedure Setlanguage(const Value: INameAndUrl);
     function Getname: string;
-    procedure Setname(const Value: string);
     function Getcolor: string;
   public
     function New: IName;
   published
     property language: TNameAndUrl read Flanguage write Flanguage;
-    property name: string read Getname write Setname;
+    property name: string read Getname;
     property color: string read Getcolor;
   end;
 
@@ -129,10 +124,6 @@ type
     Fprevious: string;
     FresultsInt: INameAndUrlList;
     Fresults: TArrayNameAndUrl;
-    procedure Setcount(const Value: Integer);
-    procedure Setnext(const Value: string);
-    procedure Setprevious(const Value: string);
-    procedure Setresults(const Value: INameAndUrlList);
     function Getcount: Integer;
     function Getnext: string;
     function Getprevious: string;
@@ -140,9 +131,9 @@ type
   public
     function New: IListResponse;
   published
-    property count: Integer read Getcount write Setcount;
-    property next: string read Getnext write Setnext;
-    property previous: string read Getprevious write Setprevious;
+    property count: Integer read Getcount;
+    property next: string read Getnext;
+    property previous: string read Getprevious;
     property results: TArrayNameAndUrl read Fresults write Fresults;
   end;
 
@@ -163,16 +154,6 @@ end;
 function TNameAndUrl.New: INameAndUrl;
 begin
   Result := Self;
-end;
-
-procedure TNameAndUrl.Setname(const Value: string);
-begin
-  Fname := Value;
-end;
-
-procedure TNameAndUrl.Seturl(const Value: string);
-begin
-  Furl := Value;
 end;
 
 { TListResponse }
@@ -204,26 +185,6 @@ end;
 function TListResponse.New: IListResponse;
 begin
   Result := Self;
-end;
-
-procedure TListResponse.Setcount(const Value: Integer);
-begin
-  Fcount := Value;
-end;
-
-procedure TListResponse.Setnext(const Value: string);
-begin
-  Fnext := Value;
-end;
-
-procedure TListResponse.Setprevious(const Value: string);
-begin
-  Fprevious := Value;
-end;
-
-procedure TListResponse.Setresults(const Value: INameAndUrlList);
-begin
-  FresultsInt := Value;
 end;
 
 { TNameAndUrlList }
@@ -272,11 +233,6 @@ begin
   Result := FlanguageInt;
 end;
 
-procedure TWithLanguage.Setlanguage(const Value: INameAndUrl);
-begin
-  FlanguageInt := Value;
-end;
-
 { TName }
 
 function TName.Getlanguage: INameAndUrl;
@@ -296,16 +252,6 @@ end;
 function TName.New: IName;
 begin
   Result := Self;
-end;
-
-procedure TName.Setlanguage(const Value: INameAndUrl);
-begin
-  FlanguageInt := Value;
-end;
-
-procedure TName.Setname(const Value: string);
-begin
-  Fname := Value;
 end;
 
 function TName.Getcolor: string;

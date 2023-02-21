@@ -12,13 +12,11 @@ type
     FflavorInt: INameAndUrl;
     Fflavor: TNameAndUrl;
     function Getpotency: Integer;
-    procedure Setpotency(const Value: Integer);
     function Getflavor: INameAndUrl;
-    procedure Setflavor(const Value: INameAndUrl);
   public
     function New: IFlavor;
   published
-    property potency: Integer read Getpotency write Setpotency;
+    property potency: Integer read Getpotency;
     property flavor: TNameAndUrl read Fflavor write Fflavor;
   end;
 
@@ -53,32 +51,20 @@ type
     Fitem: TNameAndUrl;
     Fnatural_gift_typeInt: INameAndUrl;
     Fnatural_gift_type: TNameAndUrl;
+    function Getid: Integer;
+    function Getname: string;
+    function Getgrowth_time: Integer;
+    function Getmax_harvest: Integer;
+    function Getnatural_gift_power: Integer;
+    function Getsize: Integer;
+    function Getsmoothness: Integer;
+    function Getsoil_dryness: Integer;
+    function Getfirmness: INameAndUrl;
+    function Getflavors: IFlavorList;
+    function Getitem: INameAndUrl;
+    function Getnatural_gift_type: INameAndUrl;
   public
     function New: IBerry;
-    function Getid: Integer;
-    procedure Setid(const Value: Integer);
-    function Getname: string;
-    procedure Setname(const Value: string);
-    function Getgrowth_time: Integer;
-    procedure Setgrowth_time(const Value: Integer);
-    function Getmax_harvest: Integer;
-    procedure Setmax_harvest(const Value: Integer);
-    function Getnatural_gift_power: Integer;
-    procedure Setnatural_gift_power(const Value: Integer);
-    function Getsize: Integer;
-    procedure Setsize(const Value: Integer);
-    function Getsmoothness: Integer;
-    procedure Setsmoothness(const Value: Integer);
-    function Getsoil_dryness: Integer;
-    procedure Setsoil_dryness(const Value: Integer);
-    function Getfirmness: INameAndUrl;
-    procedure Setfirmness(const Value: INameAndUrl);
-    function Getflavors: IFlavorList;
-    procedure Setflavors(const Value: IFlavorList);
-    function Getitem: INameAndUrl;
-    procedure Setitem(const Value: INameAndUrl);
-    function Getnatural_gift_type: INameAndUrl;
-    procedure Setnatural_gift_type(const Value: INameAndUrl);
   published
     property id: Integer read Fid write Fid;
     property name: string read Fname write Fname;
@@ -175,66 +161,6 @@ begin
   Result := Self;
 end;
 
-procedure TBerry.Setfirmness(const Value: INameAndUrl);
-begin
-  FfirmnessInt := Value;
-end;
-
-procedure TBerry.Setflavors(const Value: IFlavorList);
-begin
-  FflavorsInt := Value;
-end;
-
-procedure TBerry.Setgrowth_time(const Value: Integer);
-begin
-  Fgrowth_time := Value;
-end;
-
-procedure TBerry.Setid(const Value: Integer);
-begin
-  Fid := Value;
-end;
-
-procedure TBerry.Setitem(const Value: INameAndUrl);
-begin
-  FitemInt := Value;
-end;
-
-procedure TBerry.Setmax_harvest(const Value: Integer);
-begin
-  Fmax_harvest := Value;
-end;
-
-procedure TBerry.Setname(const Value: string);
-begin
-  Fname := Value;
-end;
-
-procedure TBerry.Setnatural_gift_power(const Value: Integer);
-begin
-  Fnatural_gift_power := Value;
-end;
-
-procedure TBerry.Setnatural_gift_type(const Value: INameAndUrl);
-begin
-  Fnatural_gift_typeInt := Value;
-end;
-
-procedure TBerry.Setsize(const Value: Integer);
-begin
-  Fsize := Value;
-end;
-
-procedure TBerry.Setsmoothness(const Value: Integer);
-begin
-  Fsmoothness := Value;
-end;
-
-procedure TBerry.Setsoil_dryness(const Value: Integer);
-begin
-  Fsoil_dryness := Value;
-end;
-
 { TFlavor }
 
 function TFlavor.Getflavor: INameAndUrl;
@@ -254,16 +180,6 @@ end;
 function TFlavor.New: IFlavor;
 begin
   Result := Self;
-end;
-
-procedure TFlavor.Setflavor(const Value: INameAndUrl);
-begin
-  FflavorInt := Value;
-end;
-
-procedure TFlavor.Setpotency(const Value: Integer);
-begin
-  Fpotency := Value;
 end;
 
 { TFlavorList }
