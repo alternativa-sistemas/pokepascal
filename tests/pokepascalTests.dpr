@@ -42,7 +42,9 @@ uses
   PokeAPI.EvolutionChain.Int in '..\src\PokeAPI.EvolutionChain.Int.pas',
   PokeAPI.EvolutionChain in '..\src\PokeAPI.EvolutionChain.pas',
   PokeAPI.EvolutionTrigger.Int in '..\src\PokeAPI.EvolutionTrigger.Int.pas',
-  PokeAPI.EvolutionTrigger in '..\src\PokeAPI.EvolutionTrigger.pas';
+  PokeAPI.EvolutionTrigger in '..\src\PokeAPI.EvolutionTrigger.pas',
+  PokeAPI.Generation.Int in '..\src\PokeAPI.Generation.Int.pas',
+  PokeAPI.Generation in '..\src\PokeAPI.Generation.pas';
 
 {$R *.RES}
 

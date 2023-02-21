@@ -59,6 +59,10 @@ type
     procedure TestEvolutionTriggersGET2;
     procedure TestEvolutionTriggerGETId1;
     procedure TestEvolutionTriggerGETName1;
+    procedure TestGenerationsGET1;
+    procedure TestGenerationsGET2;
+    procedure TestGenerationGETId1;
+    procedure TestGenerationGETName1;
     procedure TestNew;
   end;
 
@@ -78,7 +82,7 @@ uses
   PokeAPI.EncounterCondition.Int,
   PokeAPI.EncounterConditionValue.Int,
   PokeAPI.EvolutionChain.Int,
-  PokeAPI.EvolutionTrigger.Int;
+  PokeAPI.EvolutionTrigger.Int, PokeAPI.Generation.Int;
 
 { TestTPokeAPI }
 
@@ -500,6 +504,48 @@ begin
   CheckEquals('level-up', EvolutionTrigger.name, 'wrong name for level-up');
   CheckEquals('Level up', EvolutionTrigger.names.Item(2).name, 'wrong names.Item(0).name for level-up');
   CheckEquals('ivysaur', EvolutionTrigger.pokemon_species.Item(0).name, 'wrong pokemon_species.Item(0).name for level-up');
+end;
+
+procedure TestTPokeAPI.TestGenerationsGET1;
+var
+  Generations: IListResponse;
+begin
+  Generations := PokeAPI.GetGenerations;
+  CheckEquals(9, Generations.results.Count, 'incorrect results.Count');
+  CheckEquals('generation-i', Generations.results.Item(0).name, 'first result incorrect');
+end;
+
+procedure TestTPokeAPI.TestGenerationsGET2;
+var
+  Generations: IListResponse;
+begin
+  Generations := PokeAPI.GetGenerations;
+  while Generations.next <> '' do
+  begin
+    Generations := PokeAPI.GetGenerations(Generations.next);
+  end;
+end;
+
+procedure TestTPokeAPI.TestGenerationGETId1;
+var
+  Generation: IGeneration;
+begin
+  Generation := PokeAPI.GetGeneration(1);
+  CheckEquals(1, Generation.id, 'wrong id for id 1');
+  CheckEquals('generation-i', Generation.name, 'wrong name for id 1');
+  CheckEquals('kanto', Generation.main_region.name, 'wrong main_region.name for id 1');
+  CheckEquals('pound', Generation.moves.Item(0).name, 'wrong moves.Item(0).name for id 1');
+end;
+
+procedure TestTPokeAPI.TestGenerationGETName1;
+var
+  Generation: IGeneration;
+begin
+  Generation := PokeAPI.GetGeneration('generation-i');
+  CheckEquals(1, Generation.id, 'wrong id for generation-i');
+  CheckEquals('generation-i', Generation.name, 'wrong name for generation-i');
+  CheckEquals('kanto', Generation.main_region.name, 'wrong main_region.name for generation-i');
+  CheckEquals('pound', Generation.moves.Item(0).name, 'wrong moves.Item(0).name for generation-i');
 end;
 
 procedure TestTPokeAPI.TestNew;

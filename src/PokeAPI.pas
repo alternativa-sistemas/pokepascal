@@ -14,7 +14,8 @@ uses
   PokeAPI.ContestEffect.Int,
   PokeAPI.SuperContestEffect.Int,
   PokeAPI.EncounterMethod.Int,
-  PokeAPI.EncounterCondition.Int, PokeAPI.EncounterConditionValue.Int, PokeAPI.EvolutionChain.Int, PokeAPI.EvolutionTrigger.Int;
+  PokeAPI.EncounterCondition.Int, PokeAPI.EncounterConditionValue.Int, PokeAPI.EvolutionChain.Int, PokeAPI.EvolutionTrigger.Int,
+  PokeAPI.Generation.Int;
 
 type
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
@@ -79,6 +80,11 @@ type
     function GetEvolutionTriggers(const URL: string): IListResponse; overload;
     function GetEvolutionTrigger(const Id: Integer): IEvolutionTrigger; overload;
     function GetEvolutionTrigger(const Name: string): IEvolutionTrigger; overload;
+    function GetGenerations(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetGenerations(const URL: string): IListResponse; overload;
+    function GetGeneration(const Id: Integer): IGeneration; overload;
+    function GetGeneration(const Name: string): IGeneration; overload;
   end;
 
 implementation
@@ -94,7 +100,7 @@ uses
   PokeAPI.ContestEffect,
   PokeAPI.SuperContestEffect,
   PokeAPI.EncounterMethod,
-  PokeAPI.EncounterCondition, PokeAPI.EncounterConditionValue, PokeAPI.EvolutionChain, PokeAPI.EvolutionTrigger;
+  PokeAPI.EncounterCondition, PokeAPI.EncounterConditionValue, PokeAPI.EvolutionChain, PokeAPI.EvolutionTrigger, PokeAPI.Generation;
 
 { TPokeAPI }
 
@@ -550,6 +556,47 @@ begin
   Client.BaseURL := BaseURL;
   Request.Execute;
   Result := TJson.JsonToObject<TEvolutionTrigger>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetGenerations(const Limit: Integer = -1;
+  const Offset: Integer = -1): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'generation';
+  Client.BaseURL := BaseURL;
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
+  end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetGenerations(const URL: string): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetGeneration(const Id: Integer): IGeneration;
+begin
+  Result := GetGeneration(IntToStr(Id));
+end;
+
+function TPokeAPI.GetGeneration(const Name: string): IGeneration;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'generation/' + Name;
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TGeneration>(Response.JSONText).New;
 end;
 
 function TPokeAPI.New: IPokeAPI;
