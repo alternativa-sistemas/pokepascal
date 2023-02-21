@@ -12,7 +12,9 @@ uses
   PokeAPI.BerryFlavor.Int,
   PokeAPI.ContestType.Int,
   PokeAPI.ContestEffect.Int,
-  PokeAPI.SuperContestEffect.Int, PokeAPI.EncounterMethod.Int;
+  PokeAPI.SuperContestEffect.Int,
+  PokeAPI.EncounterMethod.Int,
+  PokeAPI.EncounterCondition.Int;
 
 type
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
@@ -58,6 +60,11 @@ type
     function GetEncounterMethods(const URL: string): IListResponse; overload;
     function GetEncounterMethod(const Id: Integer): IEncounterMethod; overload;
     function GetEncounterMethod(const Name: string): IEncounterMethod; overload;
+    function GetEncounterConditions(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetEncounterConditions(const URL: string): IListResponse; overload;
+    function GetEncounterCondition(const Id: Integer): IEncounterCondition; overload;
+    function GetEncounterCondition(const Name: string): IEncounterCondition; overload;
   end;
 
 implementation
@@ -71,7 +78,9 @@ uses
   PokeAPI.BerryFlavor,
   PokeAPI.ContestType,
   PokeAPI.ContestEffect,
-  PokeAPI.SuperContestEffect, PokeAPI.EncounterMethod;
+  PokeAPI.SuperContestEffect,
+  PokeAPI.EncounterMethod,
+  PokeAPI.EncounterCondition;
 
 { TPokeAPI }
 
@@ -368,6 +377,47 @@ begin
   Client.BaseURL := BaseURL;
   Request.Execute;
   Result := TJson.JsonToObject<TEncounterMethod>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetEncounterConditions(const Limit: Integer = -1;
+  const Offset: Integer = -1): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'encounter-condition';
+  Client.BaseURL := BaseURL;
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
+  end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetEncounterConditions(const URL: string): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetEncounterCondition(const Id: Integer): IEncounterCondition;
+begin
+  Result := GetEncounterCondition(IntToStr(Id));
+end;
+
+function TPokeAPI.GetEncounterCondition(const Name: string): IEncounterCondition;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'encounter-condition/' + Name;
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TEncounterCondition>(Response.JSONText).New;
 end;
 
 function TPokeAPI.New: IPokeAPI;

@@ -20,20 +20,20 @@ type
   published
     procedure TestBerriesGET1;
     procedure TestBerriesGET2;
-    procedure TestBerryGETId;
-    procedure TestBerryGETName;
+    procedure TestBerryGETId1;
+    procedure TestBerryGETName1;
     procedure TestBerriesFirmnessGET1;
     procedure TestBerriesFirmnessGET2;
-    procedure TestBerryFirmnessGETId;
-    procedure TestBerryFirmnessGETName;
+    procedure TestBerryFirmnessGETId1;
+    procedure TestBerryFirmnessGETName1;
     procedure TestBerriesFlavorGET1;
     procedure TestBerriesFlavorGET2;
-    procedure TestBerryFlavorGETId;
-    procedure TestBerryFlavorGETName;
+    procedure TestBerryFlavorGETId1;
+    procedure TestBerryFlavorGETName1;
     procedure TestContestsTypeGET1;
     procedure TestContestsTypeGET2;
-    procedure TestContestTypeGETId;
-    procedure TestContestTypeGETName;
+    procedure TestContestTypeGETId1;
+    procedure TestContestTypeGETName1;
     procedure TestContestsEffectGET1;
     procedure TestContestsEffectGET2;
     procedure TestContestEffectGETId1;
@@ -44,6 +44,10 @@ type
     procedure TestEncounterMethodsGET2;
     procedure TestEncounterMethodGETId1;
     procedure TestEncounterMethodGETName1;
+    procedure TestEncounterConditionsGET1;
+    procedure TestEncounterConditionsGET2;
+    procedure TestEncounterConditionGETId1;
+    procedure TestEncounterConditionGETName1;
     procedure TestNew;
   end;
 
@@ -51,7 +55,7 @@ implementation
 
 uses
   PokeAPI.Berry, PokeAPI.Berry.Int, PokeAPI.Base.Int, PokeAPI.BerryFirmness.Int, PokeAPI.BerryFlavor.Int, PokeAPI.ContestType,
-  PokeAPI.ContestType.Int, PokeAPI.ContestEffect.Int, PokeAPI.SuperContestEffect.Int, PokeAPI.EncounterMethod.Int;
+  PokeAPI.ContestType.Int, PokeAPI.ContestEffect.Int, PokeAPI.SuperContestEffect.Int, PokeAPI.EncounterMethod.Int, PokeAPI.EncounterCondition.Int;
 
 { TestTPokeAPI }
 
@@ -106,7 +110,7 @@ begin
   end;
 end;
 
-procedure TestTPokeAPI.TestBerryFirmnessGETId;
+procedure TestTPokeAPI.TestBerryFirmnessGETId1;
 var
   Berry: IBerryFirmness;
 begin
@@ -116,7 +120,7 @@ begin
   CheckEquals(8, Berry.berries.Count, 'incorrect berries.Count for id 1');
 end;
 
-procedure TestTPokeAPI.TestBerryFirmnessGETName;
+procedure TestTPokeAPI.TestBerryFirmnessGETName1;
 var
   Berry: IBerryFirmness;
 begin
@@ -126,7 +130,7 @@ begin
   CheckEquals(8, Berry.berries.Count, 'incorrect berries.Count for id 1');
 end;
 
-procedure TestTPokeAPI.TestBerryGETId;
+procedure TestTPokeAPI.TestBerryGETId1;
 var
   Berry: IBerry;
 begin
@@ -138,7 +142,7 @@ begin
   CheckEquals(5, Berry.flavors.Count, 'incorrect flavors.Count for id 1');
 end;
 
-procedure TestTPokeAPI.TestBerryGETName;
+procedure TestTPokeAPI.TestBerryGETName1;
 var
   Berry: IBerry;
 begin
@@ -170,7 +174,7 @@ begin
   end;
 end;
 
-procedure TestTPokeAPI.TestBerryFlavorGETId;
+procedure TestTPokeAPI.TestBerryFlavorGETId1;
 var
   Berry: IBerryFlavor;
 begin
@@ -181,7 +185,7 @@ begin
   CheckEquals('cool', Berry.contest_type.name, 'wrong contest_type.name for id 1');
 end;
 
-procedure TestTPokeAPI.TestBerryFlavorGETName;
+procedure TestTPokeAPI.TestBerryFlavorGETName1;
 var
   Berry: IBerryFlavor;
 begin
@@ -212,7 +216,7 @@ begin
   end;
 end;
 
-procedure TestTPokeAPI.TestContestTypeGETId;
+procedure TestTPokeAPI.TestContestTypeGETId1;
 var
   ContestType: IContestType;
 begin
@@ -223,7 +227,7 @@ begin
   CheckEquals('Sang-froid', ContestType.names.Item(0).name, 'wrong names.Item(0).name for id 1');
 end;
 
-procedure TestTPokeAPI.TestContestTypeGETName;
+procedure TestTPokeAPI.TestContestTypeGETName1;
 var
   ContestType: IContestType;
 begin
@@ -334,6 +338,46 @@ begin
   CheckEquals(1, EncounterMethod.id, 'wrong id for id 1');
   CheckEquals('walk', EncounterMethod.name, 'wrong name for id 1');
   CheckEquals('Walking in tall grass or a cave', EncounterMethod.names.Item(1).name, 'wrong names.Item(1).name for id 1');
+end;
+
+procedure TestTPokeAPI.TestEncounterConditionsGET1;
+var
+  EncounterMethods: IListResponse;
+begin
+  EncounterMethods := PokeAPI.GetEncounterConditions;
+  CheckEquals(13, EncounterMethods.results.Count, 'incorrect results.Count');
+  CheckEquals('swarm', EncounterMethods.results.Item(0).name, 'first contest effect incorrect');
+end;
+
+procedure TestTPokeAPI.TestEncounterConditionsGET2;
+var
+  EncounterMethods: IListResponse;
+begin
+  EncounterMethods := PokeAPI.GetEncounterConditions;
+  while EncounterMethods.next <> '' do
+  begin
+    EncounterMethods := PokeAPI.GetEncounterConditions(EncounterMethods.next);
+  end;
+end;
+
+procedure TestTPokeAPI.TestEncounterConditionGETId1;
+var
+  EncounterCondition: IEncounterCondition;
+begin
+  EncounterCondition := PokeAPI.GetEncounterCondition(1);
+  CheckEquals(1, EncounterCondition.id, 'wrong id for id 1');
+  CheckEquals('swarm', EncounterCondition.name, 'wrong name for id 1');
+  CheckEquals('swarm-yes', EncounterCondition.values.Item(0).name, 'wrong values.Item(0).name for id 1');
+end;
+
+procedure TestTPokeAPI.TestEncounterConditionGETName1;
+var
+  EncounterCondition: IEncounterCondition;
+begin
+  EncounterCondition := PokeAPI.GetEncounterCondition('swarm');
+  CheckEquals(1, EncounterCondition.id, 'wrong id for swarm');
+  CheckEquals('swarm', EncounterCondition.name, 'wrong name for swarm');
+  CheckEquals('swarm-yes', EncounterCondition.values.Item(0).name, 'wrong values.Item(0).name for swarm');
 end;
 
 procedure TestTPokeAPI.TestNew;

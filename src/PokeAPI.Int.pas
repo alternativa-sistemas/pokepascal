@@ -8,7 +8,7 @@ uses
   PokeAPI.BerryFirmness.Int,
   PokeAPI.BerryFlavor.Int,
   PokeAPI.ContestType.Int,
-  PokeAPI.ContestEffect.Int, PokeAPI.SuperContestEffect.Int, PokeAPI.EncounterMethod.Int;
+  PokeAPI.ContestEffect.Int, PokeAPI.SuperContestEffect.Int, PokeAPI.EncounterMethod.Int, PokeAPI.EncounterCondition.Int;
 
 type
   IPokeAPI = interface
@@ -46,6 +46,11 @@ type
     function GetEncounterMethods(const URL: string): IListResponse; overload;
     function GetEncounterMethod(const Id: Integer): IEncounterMethod; overload;
     function GetEncounterMethod(const Name: string): IEncounterMethod; overload;
+    function GetEncounterConditions(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetEncounterConditions(const URL: string): IListResponse; overload;
+    function GetEncounterCondition(const Id: Integer): IEncounterCondition; overload;
+    function GetEncounterCondition(const Name: string): IEncounterCondition; overload;
   end;
 
 implementation

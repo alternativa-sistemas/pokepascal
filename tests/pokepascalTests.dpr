@@ -34,7 +34,9 @@ uses
   PokeAPI.SuperContestEffect.Int in '..\src\PokeAPI.SuperContestEffect.Int.pas',
   PokeAPI.SuperContestEffect in '..\src\PokeAPI.SuperContestEffect.pas',
   PokeAPI.EncounterMethod.Int in '..\src\PokeAPI.EncounterMethod.Int.pas',
-  PokeAPI.EncounterMethod in '..\src\PokeAPI.EncounterMethod.pas';
+  PokeAPI.EncounterMethod in '..\src\PokeAPI.EncounterMethod.pas',
+  PokeAPI.EncounterCondition.Int in '..\src\PokeAPI.EncounterCondition.Int.pas',
+  PokeAPI.EncounterCondition in '..\src\PokeAPI.EncounterCondition.pas';
 
 {$R *.RES}
 
