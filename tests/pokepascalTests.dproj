@@ -134,6 +134,8 @@
         <DCCReference Include="..\src\PokeAPI.Int.pas"/>
         <DCCReference Include="..\src\PokeAPI.BerryFirmness.Int.pas"/>
         <DCCReference Include="..\src\PokeAPI.BerryFirmness.pas"/>
+        <DCCReference Include="..\src\PokeAPI.BerryFlavor.pas"/>
+        <DCCReference Include="..\src\PokeAPI.BerryFlavor.Int.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -24,7 +24,9 @@ uses
   PokeAPI.Berry.Int in '..\src\PokeAPI.Berry.Int.pas',
   PokeAPI.Int in '..\src\PokeAPI.Int.pas',
   PokeAPI.BerryFirmness.Int in '..\src\PokeAPI.BerryFirmness.Int.pas',
-  PokeAPI.BerryFirmness in '..\src\PokeAPI.BerryFirmness.pas';
+  PokeAPI.BerryFirmness in '..\src\PokeAPI.BerryFirmness.pas',
+  PokeAPI.BerryFlavor in '..\src\PokeAPI.BerryFlavor.pas',
+  PokeAPI.BerryFlavor.Int in '..\src\PokeAPI.BerryFlavor.Int.pas';
 
 {$R *.RES}
 
