@@ -9,9 +9,9 @@ type
   IBerryPotency = interface
   ['{2CB2EAB6-D1DE-4CD5-9591-1B960EAEC02A}']
     function Getpotency: Integer;
-    function Getberry: INameAndUrl;
+    function Getberry: INamedAPIResource;
     property potency: Integer read Getpotency;
-    property berry: INameAndUrl read Getberry;
+    property berry: INamedAPIResource read Getberry;
   end;
 
   TArrayIBerryPotency = array of IBerryPotency;
@@ -27,12 +27,12 @@ type
     function Getid: Integer;
     function Getname: string;
     function Getberries: IBerryPotencyList;
-    function Getcontest_type: INameAndUrl;
+    function Getcontest_type: INamedAPIResource;
     function Getnames: INameList;
     property id: Integer read Getid;
     property name: string read Getname;
     property berries: IBerryPotencyList read Getberries;
-    property contest_type: INameAndUrl read Getcontest_type;
+    property contest_type: INamedAPIResource read Getcontest_type;
     property names: INameList read Getnames;
   end;
 

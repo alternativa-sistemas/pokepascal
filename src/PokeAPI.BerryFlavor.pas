@@ -9,15 +9,15 @@ type
   TBerryPotency = class (TInterfacedObject, IBerryPotency)
   private
     Fpotency: Integer;
-    FberryInt: INameAndUrl;
-    Fberry: TNameAndUrl;
+    FberryInt: INamedAPIResource;
+    Fberry: TNamedAPIResource;
     function Getpotency: Integer;
-    function Getberry: INameAndUrl;
+    function Getberry: INamedAPIResource;
   public
     function New: IBerryPotency;
   published
     property potency: Integer read Getpotency;
-    property berry: TNameAndUrl read Fberry write Fberry;
+    property berry: TNamedAPIResource read Fberry write Fberry;
   end;
 
   TArrayBerryPotency = array of TBerryPotency;
@@ -39,14 +39,14 @@ type
     Fname: string;
     FberriesInt: IBerryPotencyList;
     Fberries: TArrayBerryPotency;
-    Fcontest_typeInt: INameAndUrl;
-    Fcontest_type: TNameAndUrl;
+    Fcontest_typeInt: INamedAPIResource;
+    Fcontest_type: TNamedAPIResource;
     FnamesInt: INameList;
     Fnames: TArrayName;
     function Getid: Integer;
     function Getname: string;
     function Getberries: IBerryPotencyList;
-    function Getcontest_type: INameAndUrl;
+    function Getcontest_type: INamedAPIResource;
     function Getnames: INameList;
   public
     function New: IBerryFlavor;
@@ -54,7 +54,7 @@ type
     property id: Integer read Getid;
     property name: string read Getname;
     property berries: TArrayBerryPotency read Fberries write Fberries;
-    property contest_type: TNameAndUrl read Fcontest_type write Fcontest_type;
+    property contest_type: TNamedAPIResource read Fcontest_type write Fcontest_type;
     property names: TArrayName read Fnames write Fnames;
   end;
 
@@ -67,7 +67,7 @@ begin
   Result := Fpotency;
 end;
 
-function TBerryPotency.Getberry: INameAndUrl;
+function TBerryPotency.Getberry: INamedAPIResource;
 begin
   if FberryInt = nil then
   begin
@@ -137,7 +137,7 @@ begin
   Result := FberriesInt;
 end;
 
-function TBerryFlavor.Getcontest_type: INameAndUrl;
+function TBerryFlavor.Getcontest_type: INamedAPIResource;
 begin
   if Fcontest_typeInt = nil then
   begin

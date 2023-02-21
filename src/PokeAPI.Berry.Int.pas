@@ -9,9 +9,9 @@ type
   IFlavor = interface
   ['{0A0310E8-941A-40AC-AB83-3CE8BE4316EE}']
     function Getpotency: Integer;
-    function Getflavor: INameAndUrl;
+    function Getflavor: INamedAPIResource;
     property potency: Integer read Getpotency;
-    property flavor: INameAndUrl read Getflavor;
+    property flavor: INamedAPIResource read Getflavor;
   end;
 
   TArrayIFlavor = array of IFlavor;
@@ -32,10 +32,10 @@ type
     function Getsize: Integer;
     function Getsmoothness: Integer;
     function Getsoil_dryness: Integer;
-    function Getfirmness: INameAndUrl;
+    function Getfirmness: INamedAPIResource;
     function Getflavors: IFlavorList;
-    function Getitem: INameAndUrl;
-    function Getnatural_gift_type: INameAndUrl;
+    function Getitem: INamedAPIResource;
+    function Getnatural_gift_type: INamedAPIResource;
     property id: Integer read Getid;
     property name: string read Getname;
     property growth_time: Integer read Getgrowth_time;
@@ -44,10 +44,10 @@ type
     property size: Integer read Getsize;
     property smoothness: Integer read Getsmoothness;
     property soil_dryness: Integer read Getsoil_dryness;
-    property firmness: INameAndUrl read Getfirmness;
+    property firmness: INamedAPIResource read Getfirmness;
     property flavors: IFlavorList read Getflavors;
-    property item: INameAndUrl read Getitem;
-    property natural_gift_type: INameAndUrl read Getnatural_gift_type;
+    property item: INamedAPIResource read Getitem;
+    property natural_gift_type: INamedAPIResource read Getnatural_gift_type;
   end;
 
 implementation

@@ -10,21 +10,21 @@ type
   private
     Fid: Integer;
     Fappeal: Integer;
-    Fflavor_text_entriesInt: IFlavorTextEntryList;
+    Fflavor_text_entriesInt: IFlavorTextList;
     Fflavor_text_entries: TArrayFlavorTextEntry;
-    FmovesInt: INameAndUrlList;
+    FmovesInt: INamedAPIResourceList;
     Fmoves: TArrayNameAndUrl;
     function Getid: Integer;
     function Getappeal: Integer;
-    function Getflavor_text_entries: IFlavorTextEntryList;
-    function Getmoves: INameAndUrlList;
+    function Getflavor_text_entries: IFlavorTextList;
+    function Getmoves: INamedAPIResourceList;
   public
     function New: ISuperContestEffect;
   published
     property id: Integer read Getid;
     property appeal: Integer read Getappeal;
-    property flavor_text_entries: IFlavorTextEntryList read Getflavor_text_entries;
-    property moves: INameAndUrlList read Getmoves;
+    property flavor_text_entries: IFlavorTextList read Getflavor_text_entries;
+    property moves: INamedAPIResourceList read Getmoves;
   end;
 
 implementation
@@ -42,20 +42,20 @@ begin
   Result := Fappeal;
 end;
 
-function TSuperContestEffect.Getflavor_text_entries: IFlavorTextEntryList;
+function TSuperContestEffect.Getflavor_text_entries: IFlavorTextList;
 begin
   if Fflavor_text_entriesInt = nil then
   begin
-    Fflavor_text_entriesInt := TFlavorTextEntryList.Create(Fflavor_text_entries).New;
+    Fflavor_text_entriesInt := TFlavorTextList.Create(Fflavor_text_entries).New;
   end;
   Result := Fflavor_text_entriesInt;
 end;
 
-function TSuperContestEffect.Getmoves: INameAndUrlList;
+function TSuperContestEffect.Getmoves: INamedAPIResourceList;
 begin
   if FmovesInt = nil then
   begin
-    FmovesInt := TNameAndUrlList.Create(Fmoves).New;
+    FmovesInt := TNamedAPIResourceList.Create(Fmoves).New;
   end;
   Result := FmovesInt;
 end;

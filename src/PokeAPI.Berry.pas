@@ -9,15 +9,15 @@ type
   TFlavor = class(TInterfacedObject, IFlavor)
   private
     Fpotency: Integer;
-    FflavorInt: INameAndUrl;
-    Fflavor: TNameAndUrl;
+    FflavorInt: INamedAPIResource;
+    Fflavor: TNamedAPIResource;
     function Getpotency: Integer;
-    function Getflavor: INameAndUrl;
+    function Getflavor: INamedAPIResource;
   public
     function New: IFlavor;
   published
     property potency: Integer read Getpotency;
-    property flavor: TNameAndUrl read Fflavor write Fflavor;
+    property flavor: TNamedAPIResource read Fflavor write Fflavor;
   end;
 
   TArrayFlavor = array of TFlavor;
@@ -43,14 +43,14 @@ type
     Fsize: Integer;
     Fsmoothness: Integer;
     Fsoil_dryness: Integer;
-    FfirmnessInt: INameAndUrl;
-    Ffirmness: TNameAndUrl;
+    FfirmnessInt: INamedAPIResource;
+    Ffirmness: TNamedAPIResource;
     FflavorsInt: IFlavorList;
     Fflavors: TArrayFlavor;
-    FitemInt: INameAndUrl;
-    Fitem: TNameAndUrl;
-    Fnatural_gift_typeInt: INameAndUrl;
-    Fnatural_gift_type: TNameAndUrl;
+    FitemInt: INamedAPIResource;
+    Fitem: TNamedAPIResource;
+    Fnatural_gift_typeInt: INamedAPIResource;
+    Fnatural_gift_type: TNamedAPIResource;
     function Getid: Integer;
     function Getname: string;
     function Getgrowth_time: Integer;
@@ -59,10 +59,10 @@ type
     function Getsize: Integer;
     function Getsmoothness: Integer;
     function Getsoil_dryness: Integer;
-    function Getfirmness: INameAndUrl;
+    function Getfirmness: INamedAPIResource;
     function Getflavors: IFlavorList;
-    function Getitem: INameAndUrl;
-    function Getnatural_gift_type: INameAndUrl;
+    function Getitem: INamedAPIResource;
+    function Getnatural_gift_type: INamedAPIResource;
   public
     function New: IBerry;
   published
@@ -74,17 +74,17 @@ type
     property size: Integer read Fsize write Fsize;
     property smoothness: Integer read Fsmoothness write Fsmoothness;
     property soil_dryness: Integer read Fsoil_dryness write Fsoil_dryness;
-    property firmness: TNameAndUrl read Ffirmness write Ffirmness;
+    property firmness: TNamedAPIResource read Ffirmness write Ffirmness;
     property flavors: TArrayFlavor read Fflavors write Fflavors;
-    property item: TNameAndUrl read Fitem write Fitem;
-    property natural_gift_type: TNameAndUrl read Fnatural_gift_type write Fnatural_gift_type;
+    property item: TNamedAPIResource read Fitem write Fitem;
+    property natural_gift_type: TNamedAPIResource read Fnatural_gift_type write Fnatural_gift_type;
   end;
 
 implementation
 
 { TBerry }
 
-function TBerry.Getfirmness: INameAndUrl;
+function TBerry.Getfirmness: INamedAPIResource;
 begin
   if FfirmnessInt = nil then
   begin
@@ -112,7 +112,7 @@ begin
   Result := Fid;
 end;
 
-function TBerry.Getitem: INameAndUrl;
+function TBerry.Getitem: INamedAPIResource;
 begin
   Result := FitemInt;
 end;
@@ -132,7 +132,7 @@ begin
   Result := Fnatural_gift_power;
 end;
 
-function TBerry.Getnatural_gift_type: INameAndUrl;
+function TBerry.Getnatural_gift_type: INamedAPIResource;
 begin
   if Fnatural_gift_typeInt = nil then
   begin
@@ -163,7 +163,7 @@ end;
 
 { TFlavor }
 
-function TFlavor.Getflavor: INameAndUrl;
+function TFlavor.Getflavor: INamedAPIResource;
 begin
   if FflavorInt = nil then
   begin

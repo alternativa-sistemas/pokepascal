@@ -3,25 +3,25 @@ unit PokeAPI.Base.Int;
 interface
 
 type
-  INameAndUrl = interface
+  INamedAPIResource = interface
   ['{CF82ED1A-18A7-4CF0-90FC-FB5197AA4505}']
     function Getname: string;
     function Geturl: string;
-    property name: string read Getname;
     property url: string read Geturl;
+    property name: string read Getname;
   end;
 
-  TArrayINameAndUrl = array of INameAndUrl;
+  TArrayINamedAPIResource = array of INamedAPIResource;
 
-  INameAndUrlList = interface
+  INamedAPIResourceList = interface
   ['{64DDC5D3-30F9-45BC-82B5-F4593F69F15C}']
     function Count: Integer;
-    function Item(const Index: Integer): INameAndUrl;
+    function Item(const Index: Integer): INamedAPIResource;
   end;
 
   IWithLanguage = interface
-    function Getlanguage: INameAndUrl;
-    property language: INameAndUrl read Getlanguage;
+    function Getlanguage: INamedAPIResource;
+    property language: INamedAPIResource read Getlanguage;
   end;
 
   IName = interface(IWithLanguage)
@@ -45,41 +45,46 @@ type
     function Getcount: Integer;
     function Getnext: string;
     function Getprevious: string;
-    function Getresults: INameAndUrlList;
+    function Getresults: INamedAPIResourceList;
     property count: Integer read Getcount;
     property next: string read Getnext;
     property previous: string read Getprevious;
-    property results: INameAndUrlList read Getresults;
+    property results: INamedAPIResourceList read Getresults;
   end;
 
-  IEffectEntry = interface(IWithLanguage)
+  IEffect = interface(IWithLanguage)
   ['{8918223D-1717-47A0-838D-5D2CCE365DE1}']
     function Geteffect: string;
     property effect: string read Geteffect;
   end;
 
-  TArrayIEffectEntry = array of IEffectEntry;
+  TArrayIEffect = array of IEffect;
 
-  IEffectEntryList = interface
+  IEffectList = interface
   ['{5912BC0F-2A4E-4200-8DCD-19D5B2EE5FF5}']
     function Count: Integer;
-    function Item(const Index: Integer): IEffectEntry;
+    function Item(const Index: Integer): IEffect;
   end;
 
-  IFlavorTextEntry = interface(IWithLanguage)
+  IFlavorText = interface(IWithLanguage)
   ['{4A93F7F3-6847-4311-AD33-C842CDCA4042}']
     function Getflavor_text: string;
+    function Getversion: INamedAPIResource;
     property flavor_text: string read Getflavor_text;
+    property version: INamedAPIResource read Getversion;
   end;
 
-  TArrayIFlavorTextEntry = array of IFlavorTextEntry;
+  TArrayIFlavorText = array of IFlavorText;
 
-  IFlavorTextEntryList = interface
+  IFlavorTextList = interface
   ['{56F0F738-BF47-4396-A372-E09D149292E3}']
     function Count: Integer;
-    function Item(const Index: Integer): IFlavorTextEntry;
+    function Item(const Index: Integer): IFlavorText;
   end;
 
 implementation
 
 end.
+
+
+

@@ -10,20 +10,20 @@ type
   private
     Fid: Integer;
     Fname: string;
-    Fberry_flavorInt: INameAndUrl;
-    Fberry_flavor: TNameAndUrl;
+    Fberry_flavorInt: INamedAPIResource;
+    Fberry_flavor: TNamedAPIResource;
     FnamesInt: INameList;
     Fnames: TArrayName;
     function Getid: Integer;
     function Getname: string;
-    function Getberry_flavor: INameAndUrl;
+    function Getberry_flavor: INamedAPIResource;
     function Getnames: INameList;
   public
     function New: IContestType;
   published
     property id: Integer read Getid;
     property name: string read Getname;
-    property berry_flavor: INameAndUrl read Getberry_flavor;
+    property berry_flavor: INamedAPIResource read Getberry_flavor;
     property names: INameList read Getnames;
   end;
 
@@ -41,7 +41,7 @@ begin
   Result := Fname;
 end;
 
-function TContestType.Getberry_flavor: INameAndUrl;
+function TContestType.Getberry_flavor: INamedAPIResource;
 begin
   if Fberry_flavorInt = nil then
   begin

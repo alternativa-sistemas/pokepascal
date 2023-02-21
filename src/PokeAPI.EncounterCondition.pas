@@ -10,20 +10,20 @@ type
   private
     Fid: Integer;
     Fname: string;
-    FvaluesInt: INameAndUrlList;
+    FvaluesInt: INamedAPIResourceList;
     Fvalues: TArrayNameAndUrl;
     FnamesInt: INameList;
     Fnames: TArrayName;
     function Getid: Integer;
     function Getname: string;
-    function Getvalues: INameAndUrlList;
+    function Getvalues: INamedAPIResourceList;
     function Getnames: INameList;
   public
     function New: IEncounterCondition;
   published
     property id: Integer read Getid;
     property name: string read Getname;
-    property values: INameAndUrlList read Getvalues;
+    property values: INamedAPIResourceList read Getvalues;
     property names: INameList read Getnames;
   end;
 
@@ -41,11 +41,11 @@ begin
   Result := Fname;
 end;
 
-function TEncounterCondition.Getvalues: INameAndUrlList;
+function TEncounterCondition.Getvalues: INamedAPIResourceList;
 begin
   if FvaluesInt = nil then
   begin
-    FvaluesInt := TNameAndUrlList.Create(Fvalues).New;
+    FvaluesInt := TNamedAPIResourceList.Create(Fvalues).New;
   end;
   Result := FvaluesInt;
 end;

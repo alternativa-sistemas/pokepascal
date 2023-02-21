@@ -8,13 +8,13 @@ uses
 type
   TBerryFirmness = class(TInterfacedObject, IBerryFirmness)
   private
-    FberriesInt: INameAndUrlList;
+    FberriesInt: INamedAPIResourceList;
     Fberries: TArrayNameAndUrl;
     Fid: Integer;
     Fname: string;
     FnamesInt: INameList;
     Fnames: TArrayName;
-    function Getberries: INameAndUrlList;
+    function Getberries: INamedAPIResourceList;
     function Getid: Integer;
     function Getname: string;
     function Getnames: INameList;
@@ -31,11 +31,11 @@ implementation
 
 { TBerryFirmness }
 
-function TBerryFirmness.Getberries: INameAndUrlList;
+function TBerryFirmness.Getberries: INamedAPIResourceList;
 begin
   if FberriesInt = nil then
   begin
-    FberriesInt := TNameAndUrlList.Create(Fberries).New;
+    FberriesInt := TNamedAPIResourceList.Create(Fberries).New;
   end;
   Result := FberriesInt;
 end;

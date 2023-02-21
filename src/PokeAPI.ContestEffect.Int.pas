@@ -11,13 +11,13 @@ type
     function Getid: Integer;
     function Getappeal: Integer;
     function Getjam: Integer;
-    function Geteffect_entries: IEffectEntryList;
-    function Getflavor_text_entries: IFlavorTextEntryList;
+    function Geteffect_entries: IEffectList;
+    function Getflavor_text_entries: IFlavorTextList;
     property id: Integer read Getid;
     property appeal: Integer read Getappeal;
     property jam: Integer read Getjam;
-    property effect_entries: IEffectEntryList read Geteffect_entries;
-    property flavor_text_entries: IFlavorTextEntryList read Getflavor_text_entries;
+    property effect_entries: IEffectList read Geteffect_entries;
+    property flavor_text_entries: IFlavorTextList read Getflavor_text_entries;
   end;
 
 implementation

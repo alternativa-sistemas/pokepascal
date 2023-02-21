@@ -6,54 +6,54 @@ uses
   PokeAPI.Base.Int;
 
 type
-  TNameAndUrl = class(TInterfacedObject, INameAndUrl)
+  TNamedAPIResource = class(TInterfacedObject, INamedAPIResource)
   private
     Fname: string;
     Furl: string;
     function Getname: string;
     function Geturl: string;
   public
-    function New: INameAndUrl;
+    function New: INamedAPIResource;
   published
     property name: string read Getname;
     property url: string read Geturl;
   end;
 
-  TArrayNameAndUrl = array of TNameAndUrl;
+  TArrayNameAndUrl = array of TNamedAPIResource;
 
-  TNameAndUrlList = class(TInterfacedObject, INameAndUrlList)
+  TNamedAPIResourceList = class(TInterfacedObject, INamedAPIResourceList)
   private
-    FArr: TArrayINameAndUrl;
+    FArr: TArrayINamedAPIResource;
   public
     constructor Create(const Arr: TArrayNameAndUrl); overload;
-    constructor Create(const Arr: TArrayINameAndUrl); overload;
-    function New: INameAndUrlList;
+    constructor Create(const Arr: TArrayINamedAPIResource); overload;
+    function New: INamedAPIResourceList;
     function Count: Integer;
-    function Item(const Index: Integer): INameAndUrl;
+    function Item(const Index: Integer): INamedAPIResource;
   end;
 
   TWithLanguage = class(TInterfacedObject, IWithLanguage)
   private
-    FlanguageInt: INameAndUrl;
-    Flanguage: TNameAndUrl;
-    function Getlanguage: INameAndUrl;
+    FlanguageInt: INamedAPIResource;
+    Flanguage: TNamedAPIResource;
+    function Getlanguage: INamedAPIResource;
   published
-    property language: TNameAndUrl read Flanguage write Flanguage;
+    property language: TNamedAPIResource read Flanguage write Flanguage;
   end;
 
   TName = class(TInterfacedObject, IName)
   private
-    FlanguageInt: INameAndUrl;
-    Flanguage: TNameAndUrl;
+    FlanguageInt: INamedAPIResource;
+    Flanguage: TNamedAPIResource;
     Fname: string;
     Fcolor: string;
-    function Getlanguage: INameAndUrl;
+    function Getlanguage: INamedAPIResource;
     function Getname: string;
     function Getcolor: string;
   public
     function New: IName;
   published
-    property language: TNameAndUrl read Flanguage write Flanguage;
+    property language: TNamedAPIResource read Flanguage write Flanguage;
     property name: string read Getname;
     property color: string read Getcolor;
   end;
@@ -71,50 +71,54 @@ type
     function Item(const Index: Integer): IName;
   end;
 
-  TFlavorTextEntry = class(TWithLanguage, IFlavorTextEntry)
+  TFlavorText = class(TWithLanguage, IFlavorText)
   private
     Fflavor_text: string;
+    Fversion: TNamedAPIResource;
+    FversionInt: INamedAPIResource;
     function Getflavor_text: string;
+    function Getversion: INamedAPIResource;
   public
-    function New: IFlavorTextEntry;
+    function New: IFlavorText;
   published
     property flavor_text: string read Getflavor_text;
+    property version: TNamedAPIResource read Fversion;
   end;
 
-  TArrayFlavorTextEntry = array of TFlavorTextEntry;
+  TArrayFlavorTextEntry = array of TFlavorText;
 
-  TFlavorTextEntryList = class(TInterfacedObject, IFlavorTextEntryList)
+  TFlavorTextList = class(TInterfacedObject, IFlavorTextList)
   private
-    FArr: TArrayIFlavorTextEntry;
+    FArr: TArrayIFlavorText;
   public
     constructor Create(const Arr: TArrayFlavorTextEntry); overload;
-    constructor Create(const Arr: TArrayIFlavorTextEntry); overload;
-    function New: IFlavorTextEntryList;
+    constructor Create(const Arr: TArrayIFlavorText); overload;
+    function New: IFlavorTextList;
     function Count: Integer;
-    function Item(const Index: Integer): IFlavorTextEntry;
+    function Item(const Index: Integer): IFlavorText;
   end;
 
-  TEffectEntry = class(TWithLanguage, IEffectEntry)
+  TEffect = class(TWithLanguage, IEffect)
   private
     Feffect: string;
     function Geteffect: string;
   public
-    function New: IEffectEntry;
+    function New: IEffect;
   published
     property effect: string read Geteffect;
   end;
 
-  TArrayEffectEntry = array of TEffectEntry;
+  TArrayEffectEntry = array of TEffect;
 
-  TEffectEntryList = class(TInterfacedObject, IEffectEntryList)
+  TEffectList = class(TInterfacedObject, IEffectList)
   private
-    FArr: TArrayIEffectEntry;
+    FArr: TArrayIEffect;
   public
     constructor Create(const Arr: TArrayEffectEntry); overload;
-    constructor Create(const Arr: TArrayIEffectEntry); overload;
-    function New: IEffectEntryList;
+    constructor Create(const Arr: TArrayIEffect); overload;
+    function New: IEffectList;
     function Count: Integer;
-    function Item(const Index: Integer): IEffectEntry;
+    function Item(const Index: Integer): IEffect;
   end;
 
   TListResponse = class(TInterfacedObject, IListResponse)
@@ -122,12 +126,12 @@ type
     Fcount: Integer;
     Fnext: string;
     Fprevious: string;
-    FresultsInt: INameAndUrlList;
+    FresultsInt: INamedAPIResourceList;
     Fresults: TArrayNameAndUrl;
     function Getcount: Integer;
     function Getnext: string;
     function Getprevious: string;
-    function Getresults: INameAndUrlList;
+    function Getresults: INamedAPIResourceList;
   public
     function New: IListResponse;
   published
@@ -139,19 +143,19 @@ type
 
 implementation
 
-{ TNameAndUrl }
+{ TNamedAPIResource }
 
-function TNameAndUrl.Getname: string;
+function TNamedAPIResource.Getname: string;
 begin
   Result := Fname;
 end;
 
-function TNameAndUrl.Geturl: string;
+function TNamedAPIResource.Geturl: string;
 begin
   Result := Furl;
 end;
 
-function TNameAndUrl.New: INameAndUrl;
+function TNamedAPIResource.New: INamedAPIResource;
 begin
   Result := Self;
 end;
@@ -173,11 +177,11 @@ begin
   Result := Fprevious;
 end;
 
-function TListResponse.Getresults: INameAndUrlList;
+function TListResponse.Getresults: INamedAPIResourceList;
 begin
   if FresultsInt = nil then
   begin
-    FresultsInt := TNameAndUrlList.Create(Fresults).New;
+    FresultsInt := TNamedAPIResourceList.Create(Fresults).New;
   end;
   Result := FresultsInt;
 end;
@@ -187,16 +191,16 @@ begin
   Result := Self;
 end;
 
-{ TNameAndUrlList }
+{ TNamedAPIResourceList }
 
-function TNameAndUrlList.Count: Integer;
+function TNamedAPIResourceList.Count: Integer;
 begin
   Result := Length(FArr);
 end;
 
-constructor TNameAndUrlList.Create(const Arr: TArrayNameAndUrl);
+constructor TNamedAPIResourceList.Create(const Arr: TArrayNameAndUrl);
 var
-  ArrInt: TArrayINameAndUrl;
+  ArrInt: TArrayINamedAPIResource;
   I: Integer;
 begin
   SetLength(ArrInt, Length(Arr));
@@ -207,24 +211,24 @@ begin
   Create(ArrInt);
 end;
 
-constructor TNameAndUrlList.Create(const Arr: TArrayINameAndUrl);
+constructor TNamedAPIResourceList.Create(const Arr: TArrayINamedAPIResource);
 begin
   FArr := Arr;
 end;
 
-function TNameAndUrlList.Item(const Index: Integer): INameAndUrl;
+function TNamedAPIResourceList.Item(const Index: Integer): INamedAPIResource;
 begin
   Result := FArr[Index];
 end;
 
-function TNameAndUrlList.New: INameAndUrlList;
+function TNamedAPIResourceList.New: INamedAPIResourceList;
 begin
   Result := Self;
 end;
 
 { TWithLanguage }
 
-function TWithLanguage.Getlanguage: INameAndUrl;
+function TWithLanguage.Getlanguage: INamedAPIResource;
 begin
   if FlanguageInt = nil then
   begin
@@ -235,7 +239,7 @@ end;
 
 { TName }
 
-function TName.Getlanguage: INameAndUrl;
+function TName.Getlanguage: INamedAPIResource;
 begin
   if FlanguageInt = nil then
   begin
@@ -294,23 +298,32 @@ begin
   Result := Self;
 end;
 
-{ TFlavorTextEntry }
+{ TFlavorText }
 
-function TFlavorTextEntry.Getflavor_text: string;
+function TFlavorText.Getflavor_text: string;
 begin
   Result := Fflavor_text;
 end;
 
-function TFlavorTextEntry.New: IFlavorTextEntry;
+function TFlavorText.Getversion: INamedAPIResource;
+begin
+  if FversionInt = nil then
+  begin
+    FversionInt := Fversion.New;
+  end;
+  Result := FversionInt;
+end;
+
+function TFlavorText.New: IFlavorText;
 begin
   Result := Self;
 end;
 
-{ TFlavorTextEntryList }
+{ TFlavorTextList }
 
-constructor TFlavorTextEntryList.Create(const Arr: TArrayFlavorTextEntry);
+constructor TFlavorTextList.Create(const Arr: TArrayFlavorTextEntry);
 var
-  ArrInt: TArrayIFlavorTextEntry;
+  ArrInt: TArrayIFlavorText;
   I: Integer;
 begin
   SetLength(ArrInt, Length(Arr));
@@ -321,43 +334,43 @@ begin
   Create(ArrInt);
 end;
 
-constructor TFlavorTextEntryList.Create(const Arr: TArrayIFlavorTextEntry);
+constructor TFlavorTextList.Create(const Arr: TArrayIFlavorText);
 begin
   FArr := Arr;
 end;
 
-function TFlavorTextEntryList.New: IFlavorTextEntryList;
+function TFlavorTextList.New: IFlavorTextList;
 begin
   Result := Self;
 end;
 
-function TFlavorTextEntryList.Count: Integer;
+function TFlavorTextList.Count: Integer;
 begin
   Result := Length(FArr);
 end;
 
-function TFlavorTextEntryList.Item(const Index: Integer): IFlavorTextEntry;
+function TFlavorTextList.Item(const Index: Integer): IFlavorText;
 begin
   Result := FArr[Index];
 end;
 
-{ TEffectEntry }
+{ TEffect }
 
-function TEffectEntry.Geteffect: string;
+function TEffect.Geteffect: string;
 begin
   Result := Feffect;
 end;
 
-function TEffectEntry.New: IEffectEntry;
+function TEffect.New: IEffect;
 begin
   Result := Self;
 end;
 
-{ TEffectEntryList }
+{ TEffectList }
 
-constructor TEffectEntryList.Create(const Arr: TArrayEffectEntry);
+constructor TEffectList.Create(const Arr: TArrayEffectEntry);
 var
-  ArrInt: TArrayIEffectEntry;
+  ArrInt: TArrayIEffect;
   I: Integer;
 begin
   SetLength(ArrInt, Length(Arr));
@@ -368,24 +381,26 @@ begin
   Create(ArrInt);
 end;
 
-constructor TEffectEntryList.Create(const Arr: TArrayIEffectEntry);
+constructor TEffectList.Create(const Arr: TArrayIEffect);
 begin
   FArr := Arr;
 end;
 
-function TEffectEntryList.New: IEffectEntryList;
+function TEffectList.New: IEffectList;
 begin
   Result := Self;
 end;
 
-function TEffectEntryList.Count: Integer;
+function TEffectList.Count: Integer;
 begin
   Result := Length(FArr);
 end;
 
-function TEffectEntryList.Item(const Index: Integer): IEffectEntry;
+function TEffectList.Item(const Index: Integer): IEffect;
 begin
   Result := FArr[Index];
 end;
 
 end.
+
+
