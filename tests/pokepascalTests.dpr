@@ -22,7 +22,9 @@ uses
   PokeAPI in '..\src\PokeAPI.pas',
   PokeAPI.Base.Int in '..\src\PokeAPI.Base.Int.pas',
   PokeAPI.Berry.Int in '..\src\PokeAPI.Berry.Int.pas',
-  PokeAPI.Int in '..\src\PokeAPI.Int.pas';
+  PokeAPI.Int in '..\src\PokeAPI.Int.pas',
+  PokeAPI.BerryFirmness.Int in '..\src\PokeAPI.BerryFirmness.Int.pas',
+  PokeAPI.BerryFirmness in '..\src\PokeAPI.BerryFirmness.pas';
 
 {$R *.RES}
 

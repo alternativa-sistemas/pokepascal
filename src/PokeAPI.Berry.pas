@@ -3,7 +3,7 @@ unit PokeAPI.Berry;
 interface
 
 uses
-  PokeAPI.Base.Int, PokeAPI.Base, PokeAPI.Berry.Int;
+  PokeAPI.Base.Int, PokeAPI.Base, PokeAPI.Berry.Int, PokeAPI.BerryFirmness.Int;
 
 type
   TFlavor = class(TInterfacedObject, IFlavor)
@@ -92,60 +92,6 @@ type
     property flavors: TArrayFlavor read Fflavors write Fflavors;
     property item: TNameAndUrl read Fitem write Fitem;
     property natural_gift_type: TNameAndUrl read Fnatural_gift_type write Fnatural_gift_type;
-  end;
-
-  TName = class(TInterfacedObject, IName)
-  private
-    FlanguageInt: INameAndUrl;
-    Flanguage: TNameAndUrl;
-    Fname: string;
-    function Getlanguage: INameAndUrl;
-    procedure Setlanguage(const Value: INameAndUrl);
-    function Getname: string;
-    procedure Setname(const Value: string);
-  public
-    function New: IName;
-  published
-    property language: TNameAndUrl read Flanguage write Flanguage;
-    property name: string read Getname write Setname;
-  end;
-
-  TArrayName = array of TName;
-
-  TNameList = class(TInterfacedObject, INameList)
-  private
-    FArr: TArrayIName;
-  public
-    constructor Create(const Arr: TArrayName); overload;
-    constructor Create(const Arr: TArrayIName); overload;
-    function New: INameList;
-    function Count: Integer;
-    function Item(const Index: Integer): IName;
-  end;
-
-  TBerryFirmness = class(TInterfacedObject, IBerryFirmness)
-  private
-    FberriesInt: INameAndUrlList;
-    Fberries: TArrayNameAndUrl;
-    Fid: Integer;
-    Fname: string;
-    FnamesInt: INameList;
-    Fnames: TArrayName;
-    function Getberries: INameAndUrlList;
-    procedure Setberries(const Value: INameAndUrlList);
-    function Getid: Integer;
-    procedure Setid(const Value: Integer);
-    function Getname: string;
-    procedure Setname(const Value: string);
-    function Getnames: INameList;
-    procedure Setnames(const Value: INameList);
-  public
-    function New: IBerryFirmness;
-  published
-    property berries: TArrayNameAndUrl read Fberries write Fberries;
-    property id: Integer read Getid write Setid;
-    property name: string read Getname write Setname;
-    property names: TArrayName read Fnames write Fnames;
   end;
 
   TBerryPotency = class (TInterfacedObject, IBerryPotency)
@@ -412,127 +358,6 @@ end;
 function TFlavorList.New: IFlavorList;
 begin
   Result := Self;
-end;
-
-{ TName }
-
-function TName.Getlanguage: INameAndUrl;
-begin
-  if FlanguageInt = nil then
-  begin
-    FlanguageInt := Flanguage.New;
-  end;
-  Result := FlanguageInt;
-end;
-
-function TName.Getname: string;
-begin
-  Result := Fname;
-end;
-
-function TName.New: IName;
-begin
-  Result := Self;
-end;
-
-procedure TName.Setlanguage(const Value: INameAndUrl);
-begin
-  FlanguageInt := Value;
-end;
-
-procedure TName.Setname(const Value: string);
-begin
-  Fname := Value;
-end;
-
-{ TNameList }
-
-function TNameList.Count: Integer;
-begin
-  Result := Length(FArr);
-end;
-
-constructor TNameList.Create(const Arr: TArrayIName);
-begin
-  FArr := Arr;
-end;
-
-constructor TNameList.Create(const Arr: TArrayName);
-var
-  ArrInt: TArrayIName;
-  I: Integer;
-begin
-  SetLength(ArrInt, Length(Arr));
-  for I := 0 to High(Arr) do
-  begin
-    ArrInt[I] := Arr[I].New;
-  end;
-  Create(ArrInt);
-end;
-
-function TNameList.Item(const Index: Integer): IName;
-begin
-  Result := FArr[Index];
-end;
-
-function TNameList.New: INameList;
-begin
-  Result := Self;
-end;
-
-{ TBerryFirmness }
-
-function TBerryFirmness.Getberries: INameAndUrlList;
-begin
-  if FberriesInt = nil then
-  begin
-    FberriesInt := TNameAndUrlList.Create(Fberries).New;
-  end;
-  Result := FberriesInt;
-end;
-
-function TBerryFirmness.Getid: Integer;
-begin
-  Result := Fid;
-end;
-
-function TBerryFirmness.Getname: string;
-begin
-  Result := Fname;
-end;
-
-function TBerryFirmness.Getnames: INameList;
-begin
-  if FnamesInt = nil then
-  begin
-    FnamesInt := TNameList.Create(Fnames).New;
-  end;
-  Result := FnamesInt;
-end;
-
-function TBerryFirmness.New: IBerryFirmness;
-begin
-  Result := Self;
-end;
-
-procedure TBerryFirmness.Setberries(const Value: INameAndUrlList);
-begin
-  FberriesInt := Value;
-end;
-
-procedure TBerryFirmness.Setid(const Value: Integer);
-begin
-  Fid := Value;
-end;
-
-procedure TBerryFirmness.Setname(const Value: string);
-begin
-  Fname := Value;
-end;
-
-procedure TBerryFirmness.Setnames(const Value: INameList);
-begin
-  FnamesInt := Value;
 end;
 
 { TBerryPotency }

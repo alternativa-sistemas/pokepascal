@@ -6,7 +6,8 @@ uses
   System.Generics.Collections,
   PokeAPI.Berry.Int,
   REST.Client,
-  PokeAPI.Base, PokeAPI.Int, PokeAPI.Base.Int;
+  PokeAPI.Base, PokeAPI.Int, PokeAPI.Base.Int,
+  PokeAPI.BerryFirmness.Int;
 
 type
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
@@ -39,7 +40,7 @@ type
 implementation
 
 uses
-  REST.Types, REST.Json, SysUtils, PokeAPI.Berry;
+  REST.Types, REST.Json, SysUtils, PokeAPI.Berry, PokeAPI.BerryFirmness;
 
 { TPokeAPI }
 

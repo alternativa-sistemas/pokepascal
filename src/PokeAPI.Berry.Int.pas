@@ -64,40 +64,6 @@ type
     property natural_gift_type: INameAndUrl read Getnatural_gift_type write Setnatural_gift_type;
   end;
 
-  IName = interface
-  ['{1A3ADD37-3600-4986-83E5-DA2D58DDE8D0}']
-    function Getlanguage: INameAndUrl;
-    procedure Setlanguage(const Value: INameAndUrl);
-    function Getname: string;
-    procedure Setname(const Value: string);
-    property language: INameAndUrl read Getlanguage write Setlanguage;
-    property name: string read Getname write Setname;
-  end;
-
-  TArrayIName = array of IName;
-
-  INameList = interface
-  ['{561318A3-66A7-4B9F-B132-7A1E0600DC37}']
-    function Count: Integer;
-    function Item(const Index: Integer): IName;
-  end;
-
-  IBerryFirmness = interface
-  ['{EC156C9E-66C5-4D1B-992F-F1C1F4B71D73}']
-    function Getberries: INameAndUrlList;
-    procedure Setberries(const Value: INameAndUrlList);
-    function Getid: Integer;
-    procedure Setid(const Value: Integer);
-    function Getname: string;
-    procedure Setname(const Value: string);
-    function Getnames: INameList;
-    procedure Setnames(const Value: INameList);
-    property berries: INameAndUrlList read Getberries write Setberries;
-    property id: Integer read Getid write Setid;
-    property name: string read Getname write Setname;
-    property names: INameList read Getnames write Setnames;
-  end;
-
   IBerryPotency = interface
   ['{2CB2EAB6-D1DE-4CD5-9591-1B960EAEC02A}']
     function Getpotency: Integer;

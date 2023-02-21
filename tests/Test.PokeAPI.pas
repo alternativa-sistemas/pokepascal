@@ -36,7 +36,7 @@ type
 implementation
 
 uses
-  PokeAPI.Berry, PokeAPI.Berry.Int, PokeAPI.Base.Int;
+  PokeAPI.Berry, PokeAPI.Berry.Int, PokeAPI.Base.Int, PokeAPI.BerryFirmness.Int;
 
 { TestTPokeAPI }
 

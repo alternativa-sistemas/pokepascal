@@ -21,6 +21,24 @@ type
     function Item(const Index: Integer): INameAndUrl;
   end;
 
+  IName = interface
+  ['{1A3ADD37-3600-4986-83E5-DA2D58DDE8D0}']
+    function Getlanguage: INameAndUrl;
+    procedure Setlanguage(const Value: INameAndUrl);
+    function Getname: string;
+    procedure Setname(const Value: string);
+    property language: INameAndUrl read Getlanguage write Setlanguage;
+    property name: string read Getname write Setname;
+  end;
+
+  TArrayIName = array of IName;
+
+  INameList = interface
+  ['{561318A3-66A7-4B9F-B132-7A1E0600DC37}']
+    function Count: Integer;
+    function Item(const Index: Integer): IName;
+  end;
+
   IListResponse = interface
     ['{9BD5481D-DFAE-45DE-B7E9-D00C80968433}']
     procedure Setcount(const Value: Integer);

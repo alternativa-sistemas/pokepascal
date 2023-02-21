@@ -34,6 +34,35 @@ type
     function Item(const Index: Integer): INameAndUrl;
   end;
 
+  TName = class(TInterfacedObject, IName)
+  private
+    FlanguageInt: INameAndUrl;
+    Flanguage: TNameAndUrl;
+    Fname: string;
+    function Getlanguage: INameAndUrl;
+    procedure Setlanguage(const Value: INameAndUrl);
+    function Getname: string;
+    procedure Setname(const Value: string);
+  public
+    function New: IName;
+  published
+    property language: TNameAndUrl read Flanguage write Flanguage;
+    property name: string read Getname write Setname;
+  end;
+
+  TArrayName = array of TName;
+
+  TNameList = class(TInterfacedObject, INameList)
+  private
+    FArr: TArrayIName;
+  public
+    constructor Create(const Arr: TArrayName); overload;
+    constructor Create(const Arr: TArrayIName); overload;
+    function New: INameList;
+    function Count: Integer;
+    function Item(const Index: Integer): IName;
+  end;
+
   TListResponse = class(TInterfacedObject, IListResponse)
   private
     Fcount: Integer;
@@ -169,6 +198,72 @@ begin
 end;
 
 function TNameAndUrlList.New: INameAndUrlList;
+begin
+  Result := Self;
+end;
+
+{ TName }
+
+function TName.Getlanguage: INameAndUrl;
+begin
+  if FlanguageInt = nil then
+  begin
+    FlanguageInt := Flanguage.New;
+  end;
+  Result := FlanguageInt;
+end;
+
+function TName.Getname: string;
+begin
+  Result := Fname;
+end;
+
+function TName.New: IName;
+begin
+  Result := Self;
+end;
+
+procedure TName.Setlanguage(const Value: INameAndUrl);
+begin
+  FlanguageInt := Value;
+end;
+
+procedure TName.Setname(const Value: string);
+begin
+  Fname := Value;
+end;
+
+{ TNameList }
+
+function TNameList.Count: Integer;
+begin
+  Result := Length(FArr);
+end;
+
+constructor TNameList.Create(const Arr: TArrayIName);
+begin
+  FArr := Arr;
+end;
+
+constructor TNameList.Create(const Arr: TArrayName);
+var
+  ArrInt: TArrayIName;
+  I: Integer;
+begin
+  SetLength(ArrInt, Length(Arr));
+  for I := 0 to High(Arr) do
+  begin
+    ArrInt[I] := Arr[I].New;
+  end;
+  Create(ArrInt);
+end;
+
+function TNameList.Item(const Index: Integer): IName;
+begin
+  Result := FArr[Index];
+end;
+
+function TNameList.New: INameList;
 begin
   Result := Self;
 end;

@@ -3,7 +3,7 @@ unit PokeAPI.Int;
 interface
 
 uses
-  PokeAPI.Base.Int, PokeAPI.Berry.Int;
+  PokeAPI.Base.Int, PokeAPI.Berry.Int, PokeAPI.BerryFirmness.Int;
 
 type
   IPokeAPI = interface
