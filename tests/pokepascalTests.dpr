@@ -30,7 +30,8 @@ uses
   PokeAPI.ContestType.Int in '..\src\PokeAPI.ContestType.Int.pas',
   PokeAPI.ContestType in '..\src\PokeAPI.ContestType.pas',
   PokeAPI.ContestEffect.Int in '..\src\PokeAPI.ContestEffect.Int.pas',
-  PokeAPI.ContestEffect in '..\src\PokeAPI.ContestEffect.pas';
+  PokeAPI.ContestEffect in '..\src\PokeAPI.ContestEffect.pas',
+  PokeAPI.SuperContestEffect.Int in '..\src\PokeAPI.SuperContestEffect.Int.pas';
 
 {$R *.RES}
 

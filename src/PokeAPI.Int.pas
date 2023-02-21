@@ -8,7 +8,7 @@ uses
   PokeAPI.BerryFirmness.Int,
   PokeAPI.BerryFlavor.Int,
   PokeAPI.ContestType.Int,
-  PokeAPI.ContestEffect.Int;
+  PokeAPI.ContestEffect.Int, PokeAPI.SuperContestEffect.Int;
 
 type
   IPokeAPI = interface
@@ -37,6 +37,10 @@ type
       const Offset: Integer = -1): IListResponse; overload;
     function GetContestEffects(const URL: string): IListResponse; overload;
     function GetContestEffect(const Id: Integer): IContestEffect;
+    function GetSuperContestEffects(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetSuperContestEffects(const URL: string): IListResponse; overload;
+    function GetSuperContestEffect(const Id: Integer): ISuperContestEffect;
   end;
 
 implementation

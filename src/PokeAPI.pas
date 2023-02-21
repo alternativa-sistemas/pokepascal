@@ -3,7 +3,6 @@ unit PokeAPI;
 interface
 
 uses
-  System.Generics.Collections,
   PokeAPI.Berry.Int,
   REST.Client,
   PokeAPI.Base,
@@ -11,7 +10,9 @@ uses
   PokeAPI.Base.Int,
   PokeAPI.BerryFirmness.Int,
   PokeAPI.BerryFlavor.Int,
-  PokeAPI.ContestType.Int, PokeAPI.ContestEffect.Int;
+  PokeAPI.ContestType.Int,
+  PokeAPI.ContestEffect.Int,
+  PokeAPI.SuperContestEffect.Int;
 
 type
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
@@ -48,12 +49,24 @@ type
       const Offset: Integer = -1): IListResponse; overload;
     function GetContestEffects(const URL: string): IListResponse; overload;
     function GetContestEffect(const Id: Integer): IContestEffect;
+    function GetSuperContestEffects(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetSuperContestEffects(const URL: string): IListResponse; overload;
+    function GetSuperContestEffect(const Id: Integer): ISuperContestEffect;
   end;
 
 implementation
 
 uses
-  REST.Types, REST.Json, SysUtils, PokeAPI.Berry, PokeAPI.BerryFirmness, PokeAPI.BerryFlavor, PokeAPI.ContestType, PokeAPI.ContestEffect;
+  REST.Types,
+  REST.Json,
+  SysUtils,
+  PokeAPI.Berry,
+  PokeAPI.BerryFirmness,
+  PokeAPI.BerryFlavor,
+  PokeAPI.ContestType,
+  PokeAPI.ContestEffect,
+  PokeAPI.SuperContestEffect;
 
 { TPokeAPI }
 
@@ -273,6 +286,42 @@ begin
   Client.BaseURL := BaseURL;
   Request.Execute;
   Result := TJson.JsonToObject<TContestEffect>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetSuperContestEffects(const Limit: Integer = -1;
+  const Offset: Integer = -1): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'contest-effect';
+  Client.BaseURL := BaseURL;
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
+  end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetSuperContestEffects(const URL: string): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetSuperContestEffect(const Id: Integer): ISuperContestEffect;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'super-contest-effect/' + IntToStr(Id);
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TSuperContestEffect>(Response.JSONText).New;
 end;
 
 function TPokeAPI.New: IPokeAPI;

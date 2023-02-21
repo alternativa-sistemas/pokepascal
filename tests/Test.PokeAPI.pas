@@ -37,6 +37,9 @@ type
     procedure TestContestsEffectGET1;
     procedure TestContestsEffectGET2;
     procedure TestContestEffectGETId1;
+    procedure TestSuperContestsEffectGET1;
+    procedure TestSuperContestsEffectGET2;
+    procedure TestSuperContestEffectGETId1;
     procedure TestNew;
   end;
 
@@ -44,7 +47,7 @@ implementation
 
 uses
   PokeAPI.Berry, PokeAPI.Berry.Int, PokeAPI.Base.Int, PokeAPI.BerryFirmness.Int, PokeAPI.BerryFlavor.Int, PokeAPI.ContestType,
-  PokeAPI.ContestType.Int, PokeAPI.ContestEffect.Int;
+  PokeAPI.ContestType.Int, PokeAPI.ContestEffect.Int, PokeAPI.SuperContestEffect.Int;
 
 { TestTPokeAPI }
 
@@ -232,8 +235,8 @@ var
   ContestEffects: IListResponse;
 begin
   ContestEffects := PokeAPI.GetContestEffects;
-  CheckEquals(5, ContestEffects.results.Count, 'results.Count incorreto');
-  CheckEquals('cool', ContestEffects.results.Item(0).name, 'Primeiro cherry incorreto');
+  CheckEquals(5, ContestEffects.results.Count, 'incorrect results.Count');
+  CheckEquals('', ContestEffects.results.Item(0).name, 'first contest effect incorrect');
 end;
 
 procedure TestTPokeAPI.TestContestsEffectGET2;
@@ -256,6 +259,37 @@ begin
   CheckEquals(5, ContestEffect.appeal, 'wrong appeal for id 1');
   CheckEquals('Gives a high number of appeal points wth no other effects.', ContestEffect.effect_entries.Item(0).effect, 'wrong effect_entries.Items(0).effect for id 1');
   CheckEquals('A highly appealing move.', ContestEffect.flavor_text_entries.Item(0).flavor_text, 'wrong flavor_text_entries.Items(0).flavor_text for id 1');
+end;
+
+procedure TestTPokeAPI.TestSuperContestsEffectGET1;
+var
+  SuperContestEffects: IListResponse;
+begin
+  SuperContestEffects := PokeAPI.GetSuperContestEffects;
+  CheckEquals(5, SuperContestEffects.results.Count, 'incorrect results.Count');
+  CheckEquals('', SuperContestEffects.results.Item(0).name, 'first contest effect incorrect');
+end;
+
+procedure TestTPokeAPI.TestSuperContestsEffectGET2;
+var
+  SuperContestEffects: IListResponse;
+begin
+  SuperContestEffects := PokeAPI.GetSuperContestEffects;
+  while SuperContestEffects.next <> '' do
+  begin
+    SuperContestEffects := PokeAPI.GetSuperContestEffects(SuperContestEffects.next);
+  end;
+end;
+
+procedure TestTPokeAPI.TestSuperContestEffectGETId1;
+var
+  SuperContestEffect: ISuperContestEffect;
+begin
+  SuperContestEffect := PokeAPI.GetSuperContestEffect(1);
+  CheckEquals(1, SuperContestEffect.id, 'wrong id for id 1');
+  CheckEquals(2, SuperContestEffect.appeal, 'wrong appeal for id 1');
+  CheckEquals('agility', SuperContestEffect.moves.Item(0).name, 'wrong effect_entries.Items(0).effect for id 1');
+  CheckEquals('Enables the user to perform first in the next turn.', SuperContestEffect.flavor_text_entries.Item(0).flavor_text, 'wrong flavor_text_entries.Items(0).flavor_text for id 1');
 end;
 
 procedure TestTPokeAPI.TestNew;
