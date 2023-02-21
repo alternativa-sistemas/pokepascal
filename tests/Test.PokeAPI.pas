@@ -34,6 +34,9 @@ type
     procedure TestContestsTypeGET2;
     procedure TestContestTypeGETIdOrName1;
     procedure TestContestTypeGETIdOrName2;
+    procedure TestContestsEffectGET1;
+    procedure TestContestsEffectGET2;
+    procedure TestContestEffectGETId1;
     procedure TestNew;
   end;
 
@@ -41,7 +44,7 @@ implementation
 
 uses
   PokeAPI.Berry, PokeAPI.Berry.Int, PokeAPI.Base.Int, PokeAPI.BerryFirmness.Int, PokeAPI.BerryFlavor.Int, PokeAPI.ContestType,
-  PokeAPI.ContestType.Int;
+  PokeAPI.ContestType.Int, PokeAPI.ContestEffect.Int;
 
 { TestTPokeAPI }
 
@@ -222,6 +225,37 @@ begin
   CheckEquals('cool', ContestType.name, 'wrong name for cool');
   CheckEquals('spicy', ContestType.berry_flavor.name, 'wrong berry_flavor.name for cool');
   CheckEquals('Sang-froid', ContestType.names.Item(0).name, 'wrong names.Item(0).name for cool');
+end;
+
+procedure TestTPokeAPI.TestContestsEffectGET1;
+var
+  ContestEffects: IListResponse;
+begin
+  ContestEffects := PokeAPI.GetContestEffects;
+  CheckEquals(5, ContestEffects.results.Count, 'results.Count incorreto');
+  CheckEquals('cool', ContestEffects.results.Item(0).name, 'Primeiro cherry incorreto');
+end;
+
+procedure TestTPokeAPI.TestContestsEffectGET2;
+var
+  ContestEffects: IListResponse;
+begin
+  ContestEffects := PokeAPI.GetContestEffects;
+  while ContestEffects.next <> '' do
+  begin
+    ContestEffects := PokeAPI.GetContestEffects(ContestEffects.next);
+  end;
+end;
+
+procedure TestTPokeAPI.TestContestEffectGETId1;
+var
+  ContestEffect: IContestEffect;
+begin
+  ContestEffect := PokeAPI.GetContestEffect(1);
+  CheckEquals(1, ContestEffect.id, 'wrong id for id 1');
+  CheckEquals(5, ContestEffect.appeal, 'wrong appeal for id 1');
+  CheckEquals('Gives a high number of appeal points wth no other effects.', ContestEffect.effect_entries.Item(0).effect, 'wrong effect_entries.Items(0).effect for id 1');
+  CheckEquals('A highly appealing move.', ContestEffect.flavor_text_entries.Item(0).flavor_text, 'wrong flavor_text_entries.Items(0).flavor_text for id 1');
 end;
 
 procedure TestTPokeAPI.TestNew;

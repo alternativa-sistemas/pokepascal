@@ -21,14 +21,17 @@ type
     function Item(const Index: Integer): INameAndUrl;
   end;
 
-  IName = interface
-  ['{1A3ADD37-3600-4986-83E5-DA2D58DDE8D0}']
+  IWithLanguage = interface
     function Getlanguage: INameAndUrl;
     procedure Setlanguage(const Value: INameAndUrl);
+    property language: INameAndUrl read Getlanguage write Setlanguage;
+  end;
+
+  IName = interface(IWithLanguage)
+  ['{1A3ADD37-3600-4986-83E5-DA2D58DDE8D0}']
     function Getname: string;
     procedure Setname(const Value: string);
     function Getcolor: string;
-    property language: INameAndUrl read Getlanguage write Setlanguage;
     property name: string read Getname write Setname;
     property color: string read Getcolor;
   end;
@@ -55,6 +58,34 @@ type
     property next: string read Getnext write Setnext;
     property previous: string read Getprevious write Setprevious;
     property results: INameAndUrlList read Getresults write Setresults;
+  end;
+
+  IEffectEntry = interface(IWithLanguage)
+  ['{8918223D-1717-47A0-838D-5D2CCE365DE1}']
+    function Geteffect: string;
+    property effect: string read Geteffect;
+  end;
+
+  TArrayIEffectEntry = array of IEffectEntry;
+
+  IEffectEntryList = interface
+  ['{5912BC0F-2A4E-4200-8DCD-19D5B2EE5FF5}']
+    function Count: Integer;
+    function Item(const Index: Integer): IEffectEntry;
+  end;
+
+  IFlavorTextEntry = interface(IWithLanguage)
+  ['{4A93F7F3-6847-4311-AD33-C842CDCA4042}']
+    function Getflavor_text: string;
+    property flavor_text: string read Getflavor_text;
+  end;
+
+  TArrayIFlavorTextEntry = array of IFlavorTextEntry;
+
+  IFlavorTextEntryList = interface
+  ['{56F0F738-BF47-4396-A372-E09D149292E3}']
+    function Count: Integer;
+    function Item(const Index: Integer): IFlavorTextEntry;
   end;
 
 implementation

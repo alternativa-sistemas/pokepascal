@@ -11,7 +11,7 @@ uses
   PokeAPI.Base.Int,
   PokeAPI.BerryFirmness.Int,
   PokeAPI.BerryFlavor.Int,
-  PokeAPI.ContestType.Int;
+  PokeAPI.ContestType.Int, PokeAPI.ContestEffect.Int;
 
 type
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
@@ -44,12 +44,16 @@ type
     function GetContestsType(const URL: string): IListResponse; overload;
     function GetContestType(const Id: Integer): IContestType; overload;
     function GetContestType(const Name: string): IContestType; overload;
+    function GetContestEffects(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetContestEffects(const URL: string): IListResponse; overload;
+    function GetContestEffect(const Id: Integer): IContestEffect;
   end;
 
 implementation
 
 uses
-  REST.Types, REST.Json, SysUtils, PokeAPI.Berry, PokeAPI.BerryFirmness, PokeAPI.BerryFlavor, PokeAPI.ContestType;
+  REST.Types, REST.Json, SysUtils, PokeAPI.Berry, PokeAPI.BerryFirmness, PokeAPI.BerryFlavor, PokeAPI.ContestType, PokeAPI.ContestEffect;
 
 { TPokeAPI }
 
@@ -233,6 +237,42 @@ begin
   Client.BaseURL := BaseURL;
   Request.Execute;
   Result := TJson.JsonToObject<TContestType>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetContestEffects(const Limit: Integer = -1;
+  const Offset: Integer = -1): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'contest-effect';
+  Client.BaseURL := BaseURL;
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
+  end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetContestEffects(const URL: string): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetContestEffect(const Id: Integer): IContestEffect;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'contest-effect/' + IntToStr(Id);
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TContestEffect>(Response.JSONText).New;
 end;
 
 function TPokeAPI.New: IPokeAPI;

@@ -26,7 +26,11 @@ uses
   PokeAPI.BerryFirmness.Int in '..\src\PokeAPI.BerryFirmness.Int.pas',
   PokeAPI.BerryFirmness in '..\src\PokeAPI.BerryFirmness.pas',
   PokeAPI.BerryFlavor in '..\src\PokeAPI.BerryFlavor.pas',
-  PokeAPI.BerryFlavor.Int in '..\src\PokeAPI.BerryFlavor.Int.pas';
+  PokeAPI.BerryFlavor.Int in '..\src\PokeAPI.BerryFlavor.Int.pas',
+  PokeAPI.ContestType.Int in '..\src\PokeAPI.ContestType.Int.pas',
+  PokeAPI.ContestType in '..\src\PokeAPI.ContestType.pas',
+  PokeAPI.ContestEffect.Int in '..\src\PokeAPI.ContestEffect.Int.pas',
+  PokeAPI.ContestEffect in '..\src\PokeAPI.ContestEffect.pas';
 
 {$R *.RES}
 

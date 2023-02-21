@@ -136,6 +136,10 @@
         <DCCReference Include="..\src\PokeAPI.BerryFirmness.pas"/>
         <DCCReference Include="..\src\PokeAPI.BerryFlavor.pas"/>
         <DCCReference Include="..\src\PokeAPI.BerryFlavor.Int.pas"/>
+        <DCCReference Include="..\src\PokeAPI.ContestType.Int.pas"/>
+        <DCCReference Include="..\src\PokeAPI.ContestType.pas"/>
+        <DCCReference Include="..\src\PokeAPI.ContestEffect.Int.pas"/>
+        <DCCReference Include="..\src\PokeAPI.ContestEffect.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

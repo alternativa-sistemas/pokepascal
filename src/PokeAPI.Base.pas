@@ -34,6 +34,16 @@ type
     function Item(const Index: Integer): INameAndUrl;
   end;
 
+  TWithLanguage = class(TInterfacedObject, IWithLanguage)
+  private
+    FlanguageInt: INameAndUrl;
+    Flanguage: TNameAndUrl;
+    function Getlanguage: INameAndUrl;
+    procedure Setlanguage(const Value: INameAndUrl);
+  published
+    property language: TNameAndUrl read Flanguage write Flanguage;
+  end;
+
   TName = class(TInterfacedObject, IName)
   private
     FlanguageInt: INameAndUrl;
@@ -64,6 +74,52 @@ type
     function New: INameList;
     function Count: Integer;
     function Item(const Index: Integer): IName;
+  end;
+
+  TFlavorTextEntry = class(TWithLanguage, IFlavorTextEntry)
+  private
+    Fflavor_text: string;
+    function Getflavor_text: string;
+  public
+    function New: IFlavorTextEntry;
+  published
+    property flavor_text: string read Getflavor_text;
+  end;
+
+  TArrayFlavorTextEntry = array of TFlavorTextEntry;
+
+  TFlavorTextEntryList = class(TInterfacedObject, IFlavorTextEntryList)
+  private
+    FArr: TArrayIFlavorTextEntry;
+  public
+    constructor Create(const Arr: TArrayFlavorTextEntry); overload;
+    constructor Create(const Arr: TArrayIFlavorTextEntry); overload;
+    function New: IFlavorTextEntryList;
+    function Count: Integer;
+    function Item(const Index: Integer): IFlavorTextEntry;
+  end;
+
+  TEffectEntry = class(TWithLanguage, IEffectEntry)
+  private
+    Feffect: string;
+    function Geteffect: string;
+  public
+    function New: IEffectEntry;
+  published
+    property effect: string read Geteffect;
+  end;
+
+  TArrayEffectEntry = array of TEffectEntry;
+
+  TEffectEntryList = class(TInterfacedObject, IEffectEntryList)
+  private
+    FArr: TArrayIEffectEntry;
+  public
+    constructor Create(const Arr: TArrayEffectEntry); overload;
+    constructor Create(const Arr: TArrayIEffectEntry); overload;
+    function New: IEffectEntryList;
+    function Count: Integer;
+    function Item(const Index: Integer): IEffectEntry;
   end;
 
   TListResponse = class(TInterfacedObject, IListResponse)
@@ -205,6 +261,22 @@ begin
   Result := Self;
 end;
 
+{ TWithLanguage }
+
+function TWithLanguage.Getlanguage: INameAndUrl;
+begin
+  if FlanguageInt = nil then
+  begin
+    FlanguageInt := Flanguage.New;
+  end;
+  Result := FlanguageInt;
+end;
+
+procedure TWithLanguage.Setlanguage(const Value: INameAndUrl);
+begin
+  FlanguageInt := Value;
+end;
+
 { TName }
 
 function TName.Getlanguage: INameAndUrl;
@@ -274,6 +346,100 @@ end;
 function TNameList.New: INameList;
 begin
   Result := Self;
+end;
+
+{ TFlavorTextEntry }
+
+function TFlavorTextEntry.Getflavor_text: string;
+begin
+  Result := Fflavor_text;
+end;
+
+function TFlavorTextEntry.New: IFlavorTextEntry;
+begin
+  Result := Self;
+end;
+
+{ TFlavorTextEntryList }
+
+constructor TFlavorTextEntryList.Create(const Arr: TArrayFlavorTextEntry);
+var
+  ArrInt: TArrayIFlavorTextEntry;
+  I: Integer;
+begin
+  SetLength(ArrInt, Length(Arr));
+  for I := 0 to High(Arr) do
+  begin
+    ArrInt[I] := Arr[I].New;
+  end;
+  Create(ArrInt);
+end;
+
+constructor TFlavorTextEntryList.Create(const Arr: TArrayIFlavorTextEntry);
+begin
+  FArr := Arr;
+end;
+
+function TFlavorTextEntryList.New: IFlavorTextEntryList;
+begin
+  Result := Self;
+end;
+
+function TFlavorTextEntryList.Count: Integer;
+begin
+  Result := Length(FArr);
+end;
+
+function TFlavorTextEntryList.Item(const Index: Integer): IFlavorTextEntry;
+begin
+  Result := FArr[Index];
+end;
+
+{ TEffectEntry }
+
+function TEffectEntry.Geteffect: string;
+begin
+  Result := Feffect;
+end;
+
+function TEffectEntry.New: IEffectEntry;
+begin
+  Result := Self;
+end;
+
+{ TEffectEntryList }
+
+constructor TEffectEntryList.Create(const Arr: TArrayEffectEntry);
+var
+  ArrInt: TArrayIEffectEntry;
+  I: Integer;
+begin
+  SetLength(ArrInt, Length(Arr));
+  for I := 0 to High(Arr) do
+  begin
+    ArrInt[I] := Arr[I].New;
+  end;
+  Create(ArrInt);
+end;
+
+constructor TEffectEntryList.Create(const Arr: TArrayIEffectEntry);
+begin
+  FArr := Arr;
+end;
+
+function TEffectEntryList.New: IEffectEntryList;
+begin
+  Result := Self;
+end;
+
+function TEffectEntryList.Count: Integer;
+begin
+  Result := Length(FArr);
+end;
+
+function TEffectEntryList.Item(const Index: Integer): IEffectEntry;
+begin
+  Result := FArr[Index];
 end;
 
 end.
