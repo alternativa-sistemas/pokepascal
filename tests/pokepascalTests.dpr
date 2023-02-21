@@ -44,7 +44,9 @@ uses
   PokeAPI.EvolutionTrigger.Int in '..\src\PokeAPI.EvolutionTrigger.Int.pas',
   PokeAPI.EvolutionTrigger in '..\src\PokeAPI.EvolutionTrigger.pas',
   PokeAPI.Generation.Int in '..\src\PokeAPI.Generation.Int.pas',
-  PokeAPI.Generation in '..\src\PokeAPI.Generation.pas';
+  PokeAPI.Generation in '..\src\PokeAPI.Generation.pas',
+  PokeAPI.Pokedex.Int in '..\src\PokeAPI.Pokedex.Int.pas',
+  PokeAPI.Pokedex in '..\src\PokeAPI.Pokedex.pas';
 
 {$R *.RES}
 

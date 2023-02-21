@@ -15,7 +15,7 @@ uses
   PokeAPI.SuperContestEffect.Int,
   PokeAPI.EncounterMethod.Int,
   PokeAPI.EncounterCondition.Int, PokeAPI.EncounterConditionValue.Int, PokeAPI.EvolutionChain.Int, PokeAPI.EvolutionTrigger.Int,
-  PokeAPI.Generation.Int;
+  PokeAPI.Generation.Int, PokeAPI.Pokedex.Int;
 
 type
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
@@ -85,6 +85,11 @@ type
     function GetGenerations(const URL: string): IListResponse; overload;
     function GetGeneration(const Id: Integer): IGeneration; overload;
     function GetGeneration(const Name: string): IGeneration; overload;
+    function GetPokedexes(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetPokedexes(const URL: string): IListResponse; overload;
+    function GetPokedex(const Id: Integer): IPokedex; overload;
+    function GetPokedex(const Name: string): IPokedex; overload;
   end;
 
 implementation
@@ -100,7 +105,8 @@ uses
   PokeAPI.ContestEffect,
   PokeAPI.SuperContestEffect,
   PokeAPI.EncounterMethod,
-  PokeAPI.EncounterCondition, PokeAPI.EncounterConditionValue, PokeAPI.EvolutionChain, PokeAPI.EvolutionTrigger, PokeAPI.Generation;
+  PokeAPI.EncounterCondition, PokeAPI.EncounterConditionValue, PokeAPI.EvolutionChain, PokeAPI.EvolutionTrigger, PokeAPI.Generation,
+  PokeAPI.Pokedex;
 
 { TPokeAPI }
 
@@ -597,6 +603,47 @@ begin
   Client.BaseURL := BaseURL;
   Request.Execute;
   Result := TJson.JsonToObject<TGeneration>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetPokedexes(const Limit: Integer = -1;
+  const Offset: Integer = -1): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'pokedex';
+  Client.BaseURL := BaseURL;
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
+  end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetPokedexes(const URL: string): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetPokedex(const Id: Integer): IPokedex;
+begin
+  Result := GetPokedex(IntToStr(Id));
+end;
+
+function TPokeAPI.GetPokedex(const Name: string): IPokedex;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'pokedex/' + Name;
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TPokedex>(Response.JSONText).New;
 end;
 
 function TPokeAPI.New: IPokeAPI;

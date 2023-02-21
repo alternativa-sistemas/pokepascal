@@ -9,7 +9,7 @@ uses
   PokeAPI.BerryFlavor.Int,
   PokeAPI.ContestType.Int,
   PokeAPI.ContestEffect.Int, PokeAPI.SuperContestEffect.Int, PokeAPI.EncounterMethod.Int, PokeAPI.EncounterCondition.Int, PokeAPI.EncounterConditionValue.Int,
-  PokeAPI.EvolutionChain.Int, PokeAPI.EvolutionTrigger.Int, PokeAPI.Generation.Int;
+  PokeAPI.EvolutionChain.Int, PokeAPI.EvolutionTrigger.Int, PokeAPI.Generation.Int, PokeAPI.Pokedex.Int;
 
 type
   IPokeAPI = interface
@@ -71,6 +71,11 @@ type
     function GetGenerations(const URL: string): IListResponse; overload;
     function GetGeneration(const Id: Integer): IGeneration; overload;
     function GetGeneration(const Name: string): IGeneration; overload;
+    function GetPokedexes(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetPokedexes(const URL: string): IListResponse; overload;
+    function GetPokedex(const Id: Integer): IPokedex; overload;
+    function GetPokedex(const Name: string): IPokedex; overload;
   end;
 
 implementation

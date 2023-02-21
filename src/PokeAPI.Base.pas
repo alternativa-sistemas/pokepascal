@@ -121,6 +121,29 @@ type
     function Item(const Index: Integer): IEffect;
   end;
 
+  TDescription = class(TWithLanguage, IDescription)
+  private
+    Fdescription: string;
+    function Getdescription: string;
+  public
+    function New: IDescription;
+  published
+    property description: string read Getdescription;
+  end;
+
+  TArrayDescription = array of TDescription;
+
+  TDescriptionList = class(TInterfacedObject, IDescriptionList)
+  private
+    FArr: TArrayIDescription;
+  public
+    constructor Create(const Arr: TArrayDescription); overload;
+    constructor Create(const Arr: TArrayIDescription); overload;
+    function New: IDescriptionList;
+    function Count: Integer;
+    function Item(const Index: Integer): IDescription;
+  end;
+
   TListResponse = class(TInterfacedObject, IListResponse)
   private
     Fcount: Integer;
@@ -397,6 +420,53 @@ begin
 end;
 
 function TEffectList.Item(const Index: Integer): IEffect;
+begin
+  Result := FArr[Index];
+end;
+
+{ TDescription }
+
+function TDescription.Getdescription: string;
+begin
+  Result := Fdescription;
+end;
+
+function TDescription.New: IDescription;
+begin
+  Result := Self;
+end;
+
+{ TDescriptionList }
+
+constructor TDescriptionList.Create(const Arr: TArrayDescription);
+var
+  ArrInt: TArrayIDescription;
+  I: Integer;
+begin
+  SetLength(ArrInt, Length(Arr));
+  for I := 0 to High(Arr) do
+  begin
+    ArrInt[I] := Arr[I].New;
+  end;
+  Create(ArrInt);
+end;
+
+constructor TDescriptionList.Create(const Arr: TArrayIDescription);
+begin
+  FArr := Arr;
+end;
+
+function TDescriptionList.New: IDescriptionList;
+begin
+  Result := Self;
+end;
+
+function TDescriptionList.Count: Integer;
+begin
+  Result := Length(FArr);
+end;
+
+function TDescriptionList.Item(const Index: Integer): IDescription;
 begin
   Result := FArr[Index];
 end;

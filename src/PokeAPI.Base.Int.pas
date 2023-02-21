@@ -82,6 +82,20 @@ type
     function Item(const Index: Integer): IFlavorText;
   end;
 
+  IDescription = interface(IWithLanguage)
+  ['{497DB5E2-B77A-4599-A66B-B8E6A4F3BD3B}']
+    function Getdescription: string;
+    property description: string read Getdescription;
+  end;
+
+  TArrayIDescription = array of IDescription;
+
+  IDescriptionList = interface
+  ['{4A89E0F9-520A-4A04-8C13-90C2B60DF4AA}']
+    function Count: Integer;
+    function Item(const Index: Integer): IDescription;
+  end;
+
 implementation
 
 end.

@@ -6,14 +6,14 @@ uses
   TestFramework
 , PokeAPI
 , PokeAPI.Base
-, PokeAPI.Int;
+, PokeAPI.Int
+;
 
 type
   TestTPokeAPI = class(TTestCase)
   strict private
     FPokeAPI: TPokeAPI;
     PokeAPI: IPokeAPI;
-  private
   public
     procedure SetUp; override;
     procedure TearDown; override;
@@ -63,6 +63,10 @@ type
     procedure TestGenerationsGET2;
     procedure TestGenerationGETId1;
     procedure TestGenerationGETName1;
+    procedure TestPokedexesGET1;
+    procedure TestPokedexesGET2;
+    procedure TestPokedexGETId1;
+    procedure TestPokedexGETName1;
     procedure TestNew;
   end;
 
@@ -82,7 +86,7 @@ uses
   PokeAPI.EncounterCondition.Int,
   PokeAPI.EncounterConditionValue.Int,
   PokeAPI.EvolutionChain.Int,
-  PokeAPI.EvolutionTrigger.Int, PokeAPI.Generation.Int;
+  PokeAPI.EvolutionTrigger.Int, PokeAPI.Generation.Int, PokeAPI.Pokedex.Int;
 
 { TestTPokeAPI }
 
@@ -546,6 +550,46 @@ begin
   CheckEquals('generation-i', Generation.name, 'wrong name for generation-i');
   CheckEquals('kanto', Generation.main_region.name, 'wrong main_region.name for generation-i');
   CheckEquals('pound', Generation.moves.Item(0).name, 'wrong moves.Item(0).name for generation-i');
+end;
+
+procedure TestTPokeAPI.TestPokedexesGET1;
+var
+  Pokedexes: IListResponse;
+begin
+  Pokedexes := PokeAPI.GetPokedexes;
+  CheckEquals(20, Pokedexes.results.Count, 'incorrect results.Count');
+  CheckEquals('national', Pokedexes.results.Item(0).name, 'first result incorrect');
+end;
+
+procedure TestTPokeAPI.TestPokedexesGET2;
+var
+  Pokedexes: IListResponse;
+begin
+  Pokedexes := PokeAPI.GetPokedexes;
+  while Pokedexes.next <> '' do
+  begin
+    Pokedexes := PokeAPI.GetPokedexes(Pokedexes.next);
+  end;
+end;
+
+procedure TestTPokeAPI.TestPokedexGETId1;
+var
+  Pokedex: IPokedex;
+begin
+  Pokedex := PokeAPI.GetPokedex(1);
+  CheckEquals(1, Pokedex.id, 'wrong id for id 1');
+  CheckEquals('national', Pokedex.name, 'wrong name for id 1');
+  CheckEquals('Pokédex National complet', Pokedex.descriptions.Item(0).description, 'wrong main_region.name for id 1');
+end;
+
+procedure TestTPokeAPI.TestPokedexGETName1;
+var
+  Pokedex: IPokedex;
+begin
+  Pokedex := PokeAPI.GetPokedex('national');
+  CheckEquals(1, Pokedex.id, 'wrong id for national');
+  CheckEquals('national', Pokedex.name, 'wrong name for national');
+  CheckEquals('Pokédex National complet', Pokedex.descriptions.Item(0).description, 'wrong main_region.name for national');
 end;
 
 procedure TestTPokeAPI.TestNew;
