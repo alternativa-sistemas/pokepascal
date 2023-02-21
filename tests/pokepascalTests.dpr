@@ -40,7 +40,9 @@ uses
   PokeAPI.EncounterConditionValue.Int in '..\src\PokeAPI.EncounterConditionValue.Int.pas',
   PokeAPI.EncounterConditionValue in '..\src\PokeAPI.EncounterConditionValue.pas',
   PokeAPI.EvolutionChain.Int in '..\src\PokeAPI.EvolutionChain.Int.pas',
-  PokeAPI.EvolutionChain in '..\src\PokeAPI.EvolutionChain.pas';
+  PokeAPI.EvolutionChain in '..\src\PokeAPI.EvolutionChain.pas',
+  PokeAPI.EvolutionTrigger.Int in '..\src\PokeAPI.EvolutionTrigger.Int.pas',
+  PokeAPI.EvolutionTrigger in '..\src\PokeAPI.EvolutionTrigger.pas';
 
 {$R *.RES}
 

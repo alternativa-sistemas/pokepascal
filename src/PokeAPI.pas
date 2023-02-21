@@ -14,7 +14,7 @@ uses
   PokeAPI.ContestEffect.Int,
   PokeAPI.SuperContestEffect.Int,
   PokeAPI.EncounterMethod.Int,
-  PokeAPI.EncounterCondition.Int, PokeAPI.EncounterConditionValue.Int, PokeAPI.EvolutionChain.Int;
+  PokeAPI.EncounterCondition.Int, PokeAPI.EncounterConditionValue.Int, PokeAPI.EvolutionChain.Int, PokeAPI.EvolutionTrigger.Int;
 
 type
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
@@ -74,6 +74,11 @@ type
       const Offset: Integer = -1): IListResponse; overload;
     function GetEvolutionChains(const URL: string): IListResponse; overload;
     function GetEvolutionChain(const Id: Integer): IEvolutionChain; overload;
+    function GetEvolutionTriggers(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetEvolutionTriggers(const URL: string): IListResponse; overload;
+    function GetEvolutionTrigger(const Id: Integer): IEvolutionTrigger; overload;
+    function GetEvolutionTrigger(const Name: string): IEvolutionTrigger; overload;
   end;
 
 implementation
@@ -89,7 +94,7 @@ uses
   PokeAPI.ContestEffect,
   PokeAPI.SuperContestEffect,
   PokeAPI.EncounterMethod,
-  PokeAPI.EncounterCondition, PokeAPI.EncounterConditionValue, PokeAPI.EvolutionChain;
+  PokeAPI.EncounterCondition, PokeAPI.EncounterConditionValue, PokeAPI.EvolutionChain, PokeAPI.EvolutionTrigger;
 
 { TPokeAPI }
 
@@ -504,6 +509,47 @@ begin
   Client.BaseURL := BaseURL;
   Request.Execute;
   Result := TJson.JsonToObject<TEvolutionChain>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetEvolutionTriggers(const Limit: Integer = -1;
+  const Offset: Integer = -1): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'evolution-trigger';
+  Client.BaseURL := BaseURL;
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
+  end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetEvolutionTriggers(const URL: string): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetEvolutionTrigger(const Id: Integer): IEvolutionTrigger;
+begin
+  Result := GetEvolutionTrigger(IntToStr(Id));
+end;
+
+function TPokeAPI.GetEvolutionTrigger(const Name: string): IEvolutionTrigger;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'evolution-trigger/' + Name;
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TEvolutionTrigger>(Response.JSONText).New;
 end;
 
 function TPokeAPI.New: IPokeAPI;

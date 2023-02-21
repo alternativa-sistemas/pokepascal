@@ -55,15 +55,30 @@ type
     procedure TestEvolutionChainsGET1;
     procedure TestEvolutionChainsGET2;
     procedure TestEvolutionChainGETId1;
+    procedure TestEvolutionTriggersGET1;
+    procedure TestEvolutionTriggersGET2;
+    procedure TestEvolutionTriggerGETId1;
+    procedure TestEvolutionTriggerGETName1;
     procedure TestNew;
   end;
 
 implementation
 
 uses
-  PokeAPI.Berry, PokeAPI.Berry.Int, PokeAPI.Base.Int, PokeAPI.BerryFirmness.Int, PokeAPI.BerryFlavor.Int, PokeAPI.ContestType,
-  PokeAPI.ContestType.Int, PokeAPI.ContestEffect.Int, PokeAPI.SuperContestEffect.Int, PokeAPI.EncounterMethod.Int, PokeAPI.EncounterCondition.Int,
-  PokeAPI.EncounterConditionValue.Int, PokeAPI.EvolutionChain.Int;
+  PokeAPI.Berry,
+  PokeAPI.Berry.Int,
+  PokeAPI.Base.Int,
+  PokeAPI.BerryFirmness.Int,
+  PokeAPI.BerryFlavor.Int,
+  PokeAPI.ContestType,
+  PokeAPI.ContestType.Int,
+  PokeAPI.ContestEffect.Int,
+  PokeAPI.SuperContestEffect.Int,
+  PokeAPI.EncounterMethod.Int,
+  PokeAPI.EncounterCondition.Int,
+  PokeAPI.EncounterConditionValue.Int,
+  PokeAPI.EvolutionChain.Int,
+  PokeAPI.EvolutionTrigger.Int;
 
 { TestTPokeAPI }
 
@@ -443,6 +458,48 @@ begin
   EvolutionChain := PokeAPI.GetEvolutionChain(1);
   CheckEquals(1, EvolutionChain.id, 'wrong id for id 1');
   CheckEquals('raticate', EvolutionChain.chain.species.name, 'wrong chain.species.name for id 1');
+end;
+
+procedure TestTPokeAPI.TestEvolutionTriggersGET1;
+var
+  EvolutionTriggers: IListResponse;
+begin
+  EvolutionTriggers := PokeAPI.GetEvolutionTriggers;
+  CheckEquals(13, EvolutionTriggers.results.Count, 'incorrect results.Count');
+  CheckEquals('level-up', EvolutionTriggers.results.Item(0).name, 'first contest effect incorrect');
+end;
+
+procedure TestTPokeAPI.TestEvolutionTriggersGET2;
+var
+  EvolutionTriggers: IListResponse;
+begin
+  EvolutionTriggers := PokeAPI.GetEvolutionTriggers;
+  while EvolutionTriggers.next <> '' do
+  begin
+    EvolutionTriggers := PokeAPI.GetEvolutionTriggers(EvolutionTriggers.next);
+  end;
+end;
+
+procedure TestTPokeAPI.TestEvolutionTriggerGETId1;
+var
+  EvolutionTrigger: IEvolutionTrigger;
+begin
+  EvolutionTrigger := PokeAPI.GetEvolutionTrigger(1);
+  CheckEquals(1, EvolutionTrigger.id, 'wrong id for id 1');
+  CheckEquals('level-up', EvolutionTrigger.name, 'wrong name for id 1');
+  CheckEquals('Level up', EvolutionTrigger.names.Item(2).name, 'wrong names.Item(0).name for id 1');
+  CheckEquals('ivysaur', EvolutionTrigger.pokemon_species.Item(0).name, 'wrong pokemon_species.Item(0).name for id 1');
+end;
+
+procedure TestTPokeAPI.TestEvolutionTriggerGETName1;
+var
+  EvolutionTrigger: IEvolutionTrigger;
+begin
+  EvolutionTrigger := PokeAPI.GetEvolutionTrigger('level-up');
+  CheckEquals(1, EvolutionTrigger.id, 'wrong id for level-up');
+  CheckEquals('level-up', EvolutionTrigger.name, 'wrong name for level-up');
+  CheckEquals('Level up', EvolutionTrigger.names.Item(2).name, 'wrong names.Item(0).name for level-up');
+  CheckEquals('ivysaur', EvolutionTrigger.pokemon_species.Item(0).name, 'wrong pokemon_species.Item(0).name for level-up');
 end;
 
 procedure TestTPokeAPI.TestNew;
