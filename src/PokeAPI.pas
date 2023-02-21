@@ -14,7 +14,7 @@ uses
   PokeAPI.ContestEffect.Int,
   PokeAPI.SuperContestEffect.Int,
   PokeAPI.EncounterMethod.Int,
-  PokeAPI.EncounterCondition.Int, PokeAPI.EncounterConditionValue.Int;
+  PokeAPI.EncounterCondition.Int, PokeAPI.EncounterConditionValue.Int, PokeAPI.EvolutionChain.Int;
 
 type
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
@@ -70,6 +70,10 @@ type
     function GetEncounterConditionValues(const URL: string): IListResponse; overload;
     function GetEncounterConditionValue(const Id: Integer): IEncounterConditionValue; overload;
     function GetEncounterConditionValue(const Name: string): IEncounterConditionValue; overload;
+    function GetEvolutionChains(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetEvolutionChains(const URL: string): IListResponse; overload;
+    function GetEvolutionChain(const Id: Integer): IEvolutionChain; overload;
   end;
 
 implementation
@@ -85,7 +89,7 @@ uses
   PokeAPI.ContestEffect,
   PokeAPI.SuperContestEffect,
   PokeAPI.EncounterMethod,
-  PokeAPI.EncounterCondition, PokeAPI.EncounterConditionValue;
+  PokeAPI.EncounterCondition, PokeAPI.EncounterConditionValue, PokeAPI.EvolutionChain;
 
 { TPokeAPI }
 
@@ -464,6 +468,42 @@ begin
   Client.BaseURL := BaseURL;
   Request.Execute;
   Result := TJson.JsonToObject<TEncounterConditionValue>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetEvolutionChains(const Limit: Integer = -1;
+  const Offset: Integer = -1): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'evolution-chain';
+  Client.BaseURL := BaseURL;
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
+  end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetEvolutionChains(const URL: string): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetEvolutionChain(const Id: Integer): IEvolutionChain;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'evolution-chain/' + IntToStr(Id);
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TEvolutionChain>(Response.JSONText).New;
 end;
 
 function TPokeAPI.New: IPokeAPI;

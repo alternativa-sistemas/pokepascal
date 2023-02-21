@@ -11,7 +11,7 @@ type
     Fid: Integer;
     Fname: string;
     FvaluesInt: INamedAPIResourceList;
-    Fvalues: TArrayNameAndUrl;
+    Fvalues: TArrayNamedAPIResource;
     FnamesInt: INameList;
     Fnames: TArrayName;
     function Getid: Integer;
@@ -65,3 +65,4 @@ begin
 end;
 
 end.
+

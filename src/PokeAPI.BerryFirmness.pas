@@ -9,7 +9,7 @@ type
   TBerryFirmness = class(TInterfacedObject, IBerryFirmness)
   private
     FberriesInt: INamedAPIResourceList;
-    Fberries: TArrayNameAndUrl;
+    Fberries: TArrayNamedAPIResource;
     Fid: Integer;
     Fname: string;
     FnamesInt: INameList;
@@ -21,7 +21,7 @@ type
   public
     function New: IBerryFirmness;
   published
-    property berries: TArrayNameAndUrl read Fberries write Fberries;
+    property berries: TArrayNamedAPIResource read Fberries write Fberries;
     property id: Integer read Getid;
     property name: string read Getname;
     property names: TArrayName read Fnames;

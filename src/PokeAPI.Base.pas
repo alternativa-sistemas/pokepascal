@@ -19,13 +19,13 @@ type
     property url: string read Geturl;
   end;
 
-  TArrayNameAndUrl = array of TNamedAPIResource;
+  TArrayNamedAPIResource = array of TNamedAPIResource;
 
   TNamedAPIResourceList = class(TInterfacedObject, INamedAPIResourceList)
   private
     FArr: TArrayINamedAPIResource;
   public
-    constructor Create(const Arr: TArrayNameAndUrl); overload;
+    constructor Create(const Arr: TArrayNamedAPIResource); overload;
     constructor Create(const Arr: TArrayINamedAPIResource); overload;
     function New: INamedAPIResourceList;
     function Count: Integer;
@@ -127,7 +127,7 @@ type
     Fnext: string;
     Fprevious: string;
     FresultsInt: INamedAPIResourceList;
-    Fresults: TArrayNameAndUrl;
+    Fresults: TArrayNamedAPIResource;
     function Getcount: Integer;
     function Getnext: string;
     function Getprevious: string;
@@ -138,7 +138,7 @@ type
     property count: Integer read Getcount;
     property next: string read Getnext;
     property previous: string read Getprevious;
-    property results: TArrayNameAndUrl read Fresults write Fresults;
+    property results: TArrayNamedAPIResource read Fresults write Fresults;
   end;
 
 implementation
@@ -198,7 +198,7 @@ begin
   Result := Length(FArr);
 end;
 
-constructor TNamedAPIResourceList.Create(const Arr: TArrayNameAndUrl);
+constructor TNamedAPIResourceList.Create(const Arr: TArrayNamedAPIResource);
 var
   ArrInt: TArrayINamedAPIResource;
   I: Integer;

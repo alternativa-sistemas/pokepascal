@@ -13,7 +13,7 @@ type
     Fflavor_text_entriesInt: IFlavorTextList;
     Fflavor_text_entries: TArrayFlavorTextEntry;
     FmovesInt: INamedAPIResourceList;
-    Fmoves: TArrayNameAndUrl;
+    Fmoves: TArrayNamedAPIResource;
     function Getid: Integer;
     function Getappeal: Integer;
     function Getflavor_text_entries: IFlavorTextList;

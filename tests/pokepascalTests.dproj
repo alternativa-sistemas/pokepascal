@@ -149,6 +149,7 @@
         <DCCReference Include="..\src\PokeAPI.EncounterConditionValue.Int.pas"/>
         <DCCReference Include="..\src\PokeAPI.EncounterConditionValue.pas"/>
         <DCCReference Include="..\src\PokeAPI.EvolutionChain.Int.pas"/>
+        <DCCReference Include="..\src\PokeAPI.EvolutionChain.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

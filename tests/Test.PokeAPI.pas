@@ -52,6 +52,9 @@ type
     procedure TestEncounterConditionValuesGET2;
     procedure TestEncounterConditionValueGETId1;
     procedure TestEncounterConditionValueGETName1;
+    procedure TestEvolutionChainsGET1;
+    procedure TestEvolutionChainsGET2;
+    procedure TestEvolutionChainGETId1;
     procedure TestNew;
   end;
 
@@ -60,7 +63,7 @@ implementation
 uses
   PokeAPI.Berry, PokeAPI.Berry.Int, PokeAPI.Base.Int, PokeAPI.BerryFirmness.Int, PokeAPI.BerryFlavor.Int, PokeAPI.ContestType,
   PokeAPI.ContestType.Int, PokeAPI.ContestEffect.Int, PokeAPI.SuperContestEffect.Int, PokeAPI.EncounterMethod.Int, PokeAPI.EncounterCondition.Int,
-  PokeAPI.EncounterConditionValue.Int;
+  PokeAPI.EncounterConditionValue.Int, PokeAPI.EvolutionChain.Int;
 
 { TestTPokeAPI }
 
@@ -390,7 +393,7 @@ var
   EncounterConditionValues: IListResponse;
 begin
   EncounterConditionValues := PokeAPI.GetEncounterConditionValues;
-  CheckEquals(13, EncounterConditionValues.results.Count, 'incorrect results.Count');
+  CheckEquals(20, EncounterConditionValues.results.Count, 'incorrect results.Count');
   CheckEquals('swarm-yes', EncounterConditionValues.results.Item(0).name, 'first contest effect incorrect');
 end;
 
@@ -412,7 +415,7 @@ begin
   EncounterConditionValue := PokeAPI.GetEncounterConditionValue(1);
   CheckEquals(1, EncounterConditionValue.id, 'wrong id for id 1');
   CheckEquals('swarm-yes', EncounterConditionValue.name, 'wrong name for id 1');
-  CheckEquals('WÃ¤hrend eines Schwarms', EncounterConditionValue.names.Item(0).name, 'wrong names.Item(0).name for id 1');
+  CheckEquals('Während eines Schwarms', EncounterConditionValue.names.Item(0).name, 'wrong names.Item(0).name for id 1');
 end;
 
 procedure TestTPokeAPI.TestEncounterConditionValueGETName1;
@@ -422,7 +425,24 @@ begin
   EncounterConditionValue := PokeAPI.GetEncounterConditionValue('swarm-yes');
   CheckEquals(1, EncounterConditionValue.id, 'wrong id for swarm-yes');
   CheckEquals('swarm-yes', EncounterConditionValue.name, 'wrong name for swarm-yes');
-  CheckEquals('WÃ¤hrend eines Schwarms', EncounterConditionValue.names.Item(0).name, 'wrong names.Item(0).name swarm-yes');
+  CheckEquals('Während eines Schwarms', EncounterConditionValue.names.Item(0).name, 'wrong names.Item(0).name swarm-yes');
+end;
+
+procedure TestTPokeAPI.TestEvolutionChainsGET1;
+begin
+end;
+
+procedure TestTPokeAPI.TestEvolutionChainsGET2;
+begin
+end;
+
+procedure TestTPokeAPI.TestEvolutionChainGETId1;
+var
+  EvolutionChain: IEvolutionChain;
+begin
+  EvolutionChain := PokeAPI.GetEvolutionChain(1);
+  CheckEquals(1, EvolutionChain.id, 'wrong id for id 1');
+  CheckEquals('raticate', EvolutionChain.chain.species.name, 'wrong chain.species.name for id 1');
 end;
 
 procedure TestTPokeAPI.TestNew;
