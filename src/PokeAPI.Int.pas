@@ -3,8 +3,11 @@ unit PokeAPI.Int;
 interface
 
 uses
-  PokeAPI.Base.Int, PokeAPI.Berry.Int, PokeAPI.BerryFirmness.Int,
-  PokeAPI.BerryFlavor.Int;
+  PokeAPI.Base.Int,
+  PokeAPI.Berry.Int,
+  PokeAPI.BerryFirmness.Int,
+  PokeAPI.BerryFlavor.Int,
+  PokeAPI.ContestType.Int;
 
 type
   IPokeAPI = interface
@@ -24,6 +27,11 @@ type
     function GetBerriesFlavor(const URL: string): IListResponse; overload;
     function GetBerryFlavor(const Id: Integer): IBerryFlavor; overload;
     function GetBerryFlavor(const Name: string): IBerryFlavor; overload;
+    function GetContestsType(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetContestsType(const URL: string): IListResponse; overload;
+    function GetContestType(const Id: Integer): IContestType; overload;
+    function GetContestType(const Name: string): IContestType; overload;
   end;
 
 implementation

@@ -10,7 +10,8 @@ uses
   PokeAPI.Int,
   PokeAPI.Base.Int,
   PokeAPI.BerryFirmness.Int,
-  PokeAPI.BerryFlavor.Int;
+  PokeAPI.BerryFlavor.Int,
+  PokeAPI.ContestType.Int;
 
 type
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
@@ -38,12 +39,17 @@ type
     function GetBerriesFlavor(const URL: string): IListResponse; overload;
     function GetBerryFlavor(const Id: Integer): IBerryFlavor; overload;
     function GetBerryFlavor(const Name: string): IBerryFlavor; overload;
+    function GetContestsType(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetContestsType(const URL: string): IListResponse; overload;
+    function GetContestType(const Id: Integer): IContestType; overload;
+    function GetContestType(const Name: string): IContestType; overload;
   end;
 
 implementation
 
 uses
-  REST.Types, REST.Json, SysUtils, PokeAPI.Berry, PokeAPI.BerryFirmness, PokeAPI.BerryFlavor;
+  REST.Types, REST.Json, SysUtils, PokeAPI.Berry, PokeAPI.BerryFirmness, PokeAPI.BerryFlavor, PokeAPI.ContestType;
 
 { TPokeAPI }
 
@@ -186,6 +192,47 @@ end;
 function TPokeAPI.GetBerry(const Id: Integer): IBerry;
 begin
   Result := GetBerry(IntToStr(Id));
+end;
+
+function TPokeAPI.GetContestsType(const Limit: Integer = -1;
+  const Offset: Integer = -1): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'contest-type';
+  Client.BaseURL := BaseURL;
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
+  end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetContestsType(const URL: string): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetContestType(const Id: Integer): IContestType;
+begin
+  Result := GetContestType(IntToStr(Id));
+end;
+
+function TPokeAPI.GetContestType(const Name: string): IContestType;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'contest-type/' + Name;
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TContestType>(Response.JSONText).New;
 end;
 
 function TPokeAPI.New: IPokeAPI;

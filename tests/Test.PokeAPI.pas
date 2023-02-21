@@ -30,13 +30,18 @@ type
     procedure TestBerriesFlavorGET2;
     procedure TestBerryFlavorGETIdOrName1;
     procedure TestBerryFlavorGETIdOrName2;
+    procedure TestContestsTypeGET1;
+    procedure TestContestsTypeGET2;
+    procedure TestContestTypeGETIdOrName1;
+    procedure TestContestTypeGETIdOrName2;
     procedure TestNew;
   end;
 
 implementation
 
 uses
-  PokeAPI.Berry, PokeAPI.Berry.Int, PokeAPI.Base.Int, PokeAPI.BerryFirmness.Int, PokeAPI.BerryFlavor.Int;
+  PokeAPI.Berry, PokeAPI.Berry.Int, PokeAPI.Base.Int, PokeAPI.BerryFirmness.Int, PokeAPI.BerryFlavor.Int, PokeAPI.ContestType,
+  PokeAPI.ContestType.Int;
 
 { TestTPokeAPI }
 
@@ -151,7 +156,7 @@ begin
   BerryFlavors := PokeAPI.GetBerriesFlavor;
   while BerryFlavors.next <> '' do
   begin
-    BerryFlavors := PokeAPI.GetBerries(BerryFlavors.next);
+    BerryFlavors := PokeAPI.GetBerriesFlavor(BerryFlavors.next);
   end;
 end;
 
@@ -175,6 +180,48 @@ begin
   CheckEquals('spicy', Berry.name, 'wrong name for spicy');
   CheckEquals(10, Berry.berries.Item(0).potency, 'wrong berries.Item(0).potency for spicy');
   CheckEquals('cool', Berry.contest_type.name, 'wrong contest_type.name for spicy');
+end;
+
+procedure TestTPokeAPI.TestContestsTypeGET1;
+var
+  ContestType: IListResponse;
+begin
+  ContestType := PokeAPI.GetContestsType;
+  CheckEquals(5, ContestType.results.Count, 'results.Count incorreto');
+  CheckEquals('cool', ContestType.results.Item(0).name, 'Primeiro cherry incorreto');
+end;
+
+procedure TestTPokeAPI.TestContestsTypeGET2;
+var
+  ContestType: IListResponse;
+begin
+  ContestType := PokeAPI.GetContestsType;
+  while ContestType.next <> '' do
+  begin
+    ContestType := PokeAPI.GetContestsType(ContestType.next);
+  end;
+end;
+
+procedure TestTPokeAPI.TestContestTypeGETIdOrName1;
+var
+  ContestType: IContestType;
+begin
+  ContestType := PokeAPI.GetContestType(1);
+  CheckEquals(1, ContestType.id, 'wrong id for id 1');
+  CheckEquals('cool', ContestType.name, 'wrong name for id 1');
+  CheckEquals('spicy', ContestType.berry_flavor.name, 'wrong berry_flavor.name for id 1');
+  CheckEquals('Sang-froid', ContestType.names.Item(0).name, 'wrong names.Item(0).name for id 1');
+end;
+
+procedure TestTPokeAPI.TestContestTypeGETIdOrName2;
+var
+  ContestType: IContestType;
+begin
+  ContestType := PokeAPI.GetContestType('cool');
+  CheckEquals(1, ContestType.id, 'wrong id for cool');
+  CheckEquals('cool', ContestType.name, 'wrong name for cool');
+  CheckEquals('spicy', ContestType.berry_flavor.name, 'wrong berry_flavor.name for cool');
+  CheckEquals('Sang-froid', ContestType.names.Item(0).name, 'wrong names.Item(0).name for cool');
 end;
 
 procedure TestTPokeAPI.TestNew;

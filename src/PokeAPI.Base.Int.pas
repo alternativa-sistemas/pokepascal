@@ -27,8 +27,10 @@ type
     procedure Setlanguage(const Value: INameAndUrl);
     function Getname: string;
     procedure Setname(const Value: string);
+    function Getcolor: string;
     property language: INameAndUrl read Getlanguage write Setlanguage;
     property name: string read Getname write Setname;
+    property color: string read Getcolor;
   end;
 
   TArrayIName = array of IName;

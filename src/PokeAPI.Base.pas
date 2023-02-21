@@ -39,15 +39,18 @@ type
     FlanguageInt: INameAndUrl;
     Flanguage: TNameAndUrl;
     Fname: string;
+    Fcolor: string;
     function Getlanguage: INameAndUrl;
     procedure Setlanguage(const Value: INameAndUrl);
     function Getname: string;
     procedure Setname(const Value: string);
+    function Getcolor: string;
   public
     function New: IName;
   published
     property language: TNameAndUrl read Flanguage write Flanguage;
     property name: string read Getname write Setname;
+    property color: string read Getcolor;
   end;
 
   TArrayName = array of TName;
@@ -231,6 +234,11 @@ end;
 procedure TName.Setname(const Value: string);
 begin
   Fname := Value;
+end;
+
+function TName.Getcolor: string;
+begin
+  Result := Fname;
 end;
 
 { TNameList }
