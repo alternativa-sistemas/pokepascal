@@ -36,7 +36,9 @@ uses
   PokeAPI.EncounterMethod.Int in '..\src\PokeAPI.EncounterMethod.Int.pas',
   PokeAPI.EncounterMethod in '..\src\PokeAPI.EncounterMethod.pas',
   PokeAPI.EncounterCondition.Int in '..\src\PokeAPI.EncounterCondition.Int.pas',
-  PokeAPI.EncounterCondition in '..\src\PokeAPI.EncounterCondition.pas';
+  PokeAPI.EncounterCondition in '..\src\PokeAPI.EncounterCondition.pas',
+  PokeAPI.EncounterConditionValue.Int in '..\src\PokeAPI.EncounterConditionValue.Int.pas',
+  PokeAPI.EncounterConditionValue in '..\src\PokeAPI.EncounterConditionValue.pas';
 
 {$R *.RES}
 

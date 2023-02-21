@@ -48,6 +48,10 @@ type
     procedure TestEncounterConditionsGET2;
     procedure TestEncounterConditionGETId1;
     procedure TestEncounterConditionGETName1;
+    procedure TestEncounterConditionValuesGET1;
+    procedure TestEncounterConditionValuesGET2;
+    procedure TestEncounterConditionValueGETId1;
+    procedure TestEncounterConditionValueGETName1;
     procedure TestNew;
   end;
 
@@ -55,7 +59,8 @@ implementation
 
 uses
   PokeAPI.Berry, PokeAPI.Berry.Int, PokeAPI.Base.Int, PokeAPI.BerryFirmness.Int, PokeAPI.BerryFlavor.Int, PokeAPI.ContestType,
-  PokeAPI.ContestType.Int, PokeAPI.ContestEffect.Int, PokeAPI.SuperContestEffect.Int, PokeAPI.EncounterMethod.Int, PokeAPI.EncounterCondition.Int;
+  PokeAPI.ContestType.Int, PokeAPI.ContestEffect.Int, PokeAPI.SuperContestEffect.Int, PokeAPI.EncounterMethod.Int, PokeAPI.EncounterCondition.Int,
+  PokeAPI.EncounterConditionValue.Int;
 
 { TestTPokeAPI }
 
@@ -342,21 +347,21 @@ end;
 
 procedure TestTPokeAPI.TestEncounterConditionsGET1;
 var
-  EncounterMethods: IListResponse;
+  EncounterConditions: IListResponse;
 begin
-  EncounterMethods := PokeAPI.GetEncounterConditions;
-  CheckEquals(13, EncounterMethods.results.Count, 'incorrect results.Count');
-  CheckEquals('swarm', EncounterMethods.results.Item(0).name, 'first contest effect incorrect');
+  EncounterConditions := PokeAPI.GetEncounterConditions;
+  CheckEquals(13, EncounterConditions.results.Count, 'incorrect results.Count');
+  CheckEquals('swarm', EncounterConditions.results.Item(0).name, 'first contest effect incorrect');
 end;
 
 procedure TestTPokeAPI.TestEncounterConditionsGET2;
 var
-  EncounterMethods: IListResponse;
+  EncounterConditions: IListResponse;
 begin
-  EncounterMethods := PokeAPI.GetEncounterConditions;
-  while EncounterMethods.next <> '' do
+  EncounterConditions := PokeAPI.GetEncounterConditions;
+  while EncounterConditions.next <> '' do
   begin
-    EncounterMethods := PokeAPI.GetEncounterConditions(EncounterMethods.next);
+    EncounterConditions := PokeAPI.GetEncounterConditions(EncounterConditions.next);
   end;
 end;
 
@@ -378,6 +383,46 @@ begin
   CheckEquals(1, EncounterCondition.id, 'wrong id for swarm');
   CheckEquals('swarm', EncounterCondition.name, 'wrong name for swarm');
   CheckEquals('swarm-yes', EncounterCondition.values.Item(0).name, 'wrong values.Item(0).name for swarm');
+end;
+
+procedure TestTPokeAPI.TestEncounterConditionValuesGET1;
+var
+  EncounterConditionValues: IListResponse;
+begin
+  EncounterConditionValues := PokeAPI.GetEncounterConditionValues;
+  CheckEquals(13, EncounterConditionValues.results.Count, 'incorrect results.Count');
+  CheckEquals('swarm-yes', EncounterConditionValues.results.Item(0).name, 'first contest effect incorrect');
+end;
+
+procedure TestTPokeAPI.TestEncounterConditionValuesGET2;
+var
+  EncounterConditionValues: IListResponse;
+begin
+  EncounterConditionValues := PokeAPI.GetEncounterConditionValues;
+  while EncounterConditionValues.next <> '' do
+  begin
+    EncounterConditionValues := PokeAPI.GetEncounterConditionValues(EncounterConditionValues.next);
+  end;
+end;
+
+procedure TestTPokeAPI.TestEncounterConditionValueGETId1;
+var
+  EncounterConditionValue: IEncounterConditionValue;
+begin
+  EncounterConditionValue := PokeAPI.GetEncounterConditionValue(1);
+  CheckEquals(1, EncounterConditionValue.id, 'wrong id for id 1');
+  CheckEquals('swarm-yes', EncounterConditionValue.name, 'wrong name for id 1');
+  CheckEquals('Während eines Schwarms', EncounterConditionValue.names.Item(0).name, 'wrong names.Item(0).name for id 1');
+end;
+
+procedure TestTPokeAPI.TestEncounterConditionValueGETName1;
+var
+  EncounterConditionValue: IEncounterConditionValue;
+begin
+  EncounterConditionValue := PokeAPI.GetEncounterConditionValue('swarm-yes');
+  CheckEquals(1, EncounterConditionValue.id, 'wrong id for swarm-yes');
+  CheckEquals('swarm-yes', EncounterConditionValue.name, 'wrong name for swarm-yes');
+  CheckEquals('Während eines Schwarms', EncounterConditionValue.names.Item(0).name, 'wrong names.Item(0).name swarm-yes');
 end;
 
 procedure TestTPokeAPI.TestNew;
