@@ -67,6 +67,14 @@ type
     procedure TestPokedexesGET2;
     procedure TestPokedexGETId1;
     procedure TestPokedexGETName1;
+    procedure TestVersionsGET1;
+    procedure TestVersionsGET2;
+    procedure TestVersionGETId1;
+    procedure TestVersionGETName1;
+    procedure TestVersionGroupsGET1;
+    procedure TestVersionGroupsGET2;
+    procedure TestVersionGroupGETId1;
+    procedure TestVersionGroupGETName1;
     procedure TestNew;
   end;
 
@@ -86,7 +94,7 @@ uses
   PokeAPI.EncounterCondition.Int,
   PokeAPI.EncounterConditionValue.Int,
   PokeAPI.EvolutionChain.Int,
-  PokeAPI.EvolutionTrigger.Int, PokeAPI.Generation.Int, PokeAPI.Pokedex.Int;
+  PokeAPI.EvolutionTrigger.Int, PokeAPI.Generation.Int, PokeAPI.Pokedex.Int, PokeAPI.Version.Int, PokeAPI.VersionGroup.Int;
 
 { TestTPokeAPI }
 
@@ -590,6 +598,86 @@ begin
   CheckEquals(1, Pokedex.id, 'wrong id for national');
   CheckEquals('national', Pokedex.name, 'wrong name for national');
   CheckEquals('Pokédex National complet', Pokedex.descriptions.Item(0).description, 'wrong main_region.name for national');
+end;
+
+procedure TestTPokeAPI.TestVersionsGET1;
+var
+  Versions: IListResponse;
+begin
+  Versions := PokeAPI.GetVersions;
+  CheckEquals(20, Versions.results.Count, 'incorrect results.Count');
+  CheckEquals('red', Versions.results.Item(0).name, 'first result incorrect');
+end;
+
+procedure TestTPokeAPI.TestVersionsGET2;
+var
+  Versions: IListResponse;
+begin
+  Versions := PokeAPI.GetVersions;
+  while Versions.next <> '' do
+  begin
+    Versions := PokeAPI.GetVersions(Versions.next);
+  end;
+end;
+
+procedure TestTPokeAPI.TestVersionGETId1;
+var
+  Version: IVersion;
+begin
+  Version := PokeAPI.GetVersion(1);
+  CheckEquals(1, Version.id, 'wrong id for id 1');
+  CheckEquals('red', Version.name, 'wrong name for id 1');
+  CheckEquals('red-blue', Version.version_group.name, 'wrong version_group.name for id 1');
+end;
+
+procedure TestTPokeAPI.TestVersionGETName1;
+var
+  Version: IVersion;
+begin
+  Version := PokeAPI.GetVersion('red');
+  CheckEquals(1, Version.id, 'wrong id for red');
+  CheckEquals('red', Version.name, 'wrong name for red');
+  CheckEquals('red-blue', Version.version_group.name, 'wrong version_group.name for red');
+end;
+
+procedure TestTPokeAPI.TestVersionGroupsGET1;
+var
+  VersionGroups: IListResponse;
+begin
+  VersionGroups := PokeAPI.GetVersionGroups;
+  CheckEquals(20, VersionGroups.results.Count, 'incorrect results.Count');
+  CheckEquals('red', VersionGroups.results.Item(0).name, 'first result incorrect');
+end;
+
+procedure TestTPokeAPI.TestVersionGroupsGET2;
+var
+  VersionGroups: IListResponse;
+begin
+  VersionGroups := PokeAPI.GetVersionGroups;
+  while VersionGroups.next <> '' do
+  begin
+    VersionGroups := PokeAPI.GetVersionGroups(VersionGroups.next);
+  end;
+end;
+
+procedure TestTPokeAPI.TestVersionGroupGETId1;
+var
+  VersionGroup: IVersionGroup;
+begin
+  VersionGroup := PokeAPI.GetVersionGroup(1);
+  CheckEquals(1, VersionGroup.id, 'wrong id for id 1');
+  CheckEquals('red', VersionGroup.name, 'wrong name for id 1');
+  CheckEquals('red-blue', VersionGroup.version_group.name, 'wrong version_group.name for id 1');
+end;
+
+procedure TestTPokeAPI.TestVersionGroupGETName1;
+var
+  VersionGroup: IVersionGroup;
+begin
+  VersionGroup := PokeAPI.GetVersionGroup('red');
+  CheckEquals(1, VersionGroup.id, 'wrong id for red');
+  CheckEquals('red', VersionGroup.name, 'wrong name for red');
+  CheckEquals('red-blue', VersionGroup.version_group.name, 'wrong version_group.name for red');
 end;
 
 procedure TestTPokeAPI.TestNew;

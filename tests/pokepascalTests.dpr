@@ -46,7 +46,11 @@ uses
   PokeAPI.Generation.Int in '..\src\PokeAPI.Generation.Int.pas',
   PokeAPI.Generation in '..\src\PokeAPI.Generation.pas',
   PokeAPI.Pokedex.Int in '..\src\PokeAPI.Pokedex.Int.pas',
-  PokeAPI.Pokedex in '..\src\PokeAPI.Pokedex.pas';
+  PokeAPI.Pokedex in '..\src\PokeAPI.Pokedex.pas',
+  PokeAPI.Version.Int in '..\src\PokeAPI.Version.Int.pas',
+  PokeAPI.Version in '..\src\PokeAPI.Version.pas',
+  PokeAPI.VersionGroup.Int in '..\src\PokeAPI.VersionGroup.Int.pas',
+  PokeAPI.VersionGroup in '..\src\PokeAPI.VersionGroup.pas';
 
 {$R *.RES}
 

@@ -9,7 +9,8 @@ uses
   PokeAPI.BerryFlavor.Int,
   PokeAPI.ContestType.Int,
   PokeAPI.ContestEffect.Int, PokeAPI.SuperContestEffect.Int, PokeAPI.EncounterMethod.Int, PokeAPI.EncounterCondition.Int, PokeAPI.EncounterConditionValue.Int,
-  PokeAPI.EvolutionChain.Int, PokeAPI.EvolutionTrigger.Int, PokeAPI.Generation.Int, PokeAPI.Pokedex.Int;
+  PokeAPI.EvolutionChain.Int, PokeAPI.EvolutionTrigger.Int, PokeAPI.Generation.Int, PokeAPI.Pokedex.Int, PokeAPI.Version.Int,
+  PokeAPI.VersionGroup.Int;
 
 type
   IPokeAPI = interface
@@ -76,6 +77,16 @@ type
     function GetPokedexes(const URL: string): IListResponse; overload;
     function GetPokedex(const Id: Integer): IPokedex; overload;
     function GetPokedex(const Name: string): IPokedex; overload;
+    function GetVersions(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetVersions(const URL: string): IListResponse; overload;
+    function GetVersion(const Id: Integer): IVersion; overload;
+    function GetVersion(const Name: string): IVersion; overload;
+    function GetVersionGroups(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetVersionGroups(const URL: string): IListResponse; overload;
+    function GetVersionGroup(const Id: Integer): IVersionGroup; overload;
+    function GetVersionGroup(const Name: string): IVersionGroup; overload;
   end;
 
 implementation

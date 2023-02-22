@@ -15,7 +15,7 @@ uses
   PokeAPI.SuperContestEffect.Int,
   PokeAPI.EncounterMethod.Int,
   PokeAPI.EncounterCondition.Int, PokeAPI.EncounterConditionValue.Int, PokeAPI.EvolutionChain.Int, PokeAPI.EvolutionTrigger.Int,
-  PokeAPI.Generation.Int, PokeAPI.Pokedex.Int;
+  PokeAPI.Generation.Int, PokeAPI.Pokedex.Int, PokeAPI.Version.Int, PokeAPI.VersionGroup.Int;
 
 type
   TPokeAPI = class(TInterfacedObject, IPokeAPI)
@@ -90,6 +90,16 @@ type
     function GetPokedexes(const URL: string): IListResponse; overload;
     function GetPokedex(const Id: Integer): IPokedex; overload;
     function GetPokedex(const Name: string): IPokedex; overload;
+    function GetVersions(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetVersions(const URL: string): IListResponse; overload;
+    function GetVersion(const Id: Integer): IVersion; overload;
+    function GetVersion(const Name: string): IVersion; overload;
+    function GetVersionGroups(const Limit: Integer = -1;
+      const Offset: Integer = -1): IListResponse; overload;
+    function GetVersionGroups(const URL: string): IListResponse; overload;
+    function GetVersionGroup(const Id: Integer): IVersionGroup; overload;
+    function GetVersionGroup(const Name: string): IVersionGroup; overload;
   end;
 
 implementation
@@ -106,7 +116,7 @@ uses
   PokeAPI.SuperContestEffect,
   PokeAPI.EncounterMethod,
   PokeAPI.EncounterCondition, PokeAPI.EncounterConditionValue, PokeAPI.EvolutionChain, PokeAPI.EvolutionTrigger, PokeAPI.Generation,
-  PokeAPI.Pokedex;
+  PokeAPI.Pokedex, PokeAPI.Version, PokeAPI.VersionGroup;
 
 { TPokeAPI }
 
@@ -644,6 +654,88 @@ begin
   Client.BaseURL := BaseURL;
   Request.Execute;
   Result := TJson.JsonToObject<TPokedex>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetVersions(const Limit: Integer = -1;
+  const Offset: Integer = -1): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'version';
+  Client.BaseURL := BaseURL;
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
+  end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetVersions(const URL: string): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetVersion(const Id: Integer): IVersion;
+begin
+  Result := GetVersion(IntToStr(Id));
+end;
+
+function TPokeAPI.GetVersion(const Name: string): IVersion;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'version/' + Name;
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TVersion>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetVersionGroups(const Limit: Integer = -1;
+  const Offset: Integer = -1): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'version-group';
+  Client.BaseURL := BaseURL;
+  if Limit > -1 then
+  begin
+    Request.AddParameter('limit', IntToStr(Limit), TRESTRequestParameterKind.pkQUERY);
+  end;
+  if Offset > -1 then
+  begin
+    Request.AddParameter('offset', IntToStr(Offset), TRESTRequestParameterKind.pkQUERY);
+  end;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetVersionGroups(const URL: string): IListResponse;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := '';
+  Client.BaseURL := URL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TListResponse>(Response.JSONText).New;
+end;
+
+function TPokeAPI.GetVersionGroup(const Id: Integer): IVersionGroup;
+begin
+  Result := GetVersionGroup(IntToStr(Id));
+end;
+
+function TPokeAPI.GetVersionGroup(const Name: string): IVersionGroup;
+begin
+  Request.Method := TRESTRequestMethod.rmGET;
+  Request.Resource := 'version-group/' + Name;
+  Client.BaseURL := BaseURL;
+  Request.Execute;
+  Result := TJson.JsonToObject<TVersionGroup>(Response.JSONText).New;
 end;
 
 function TPokeAPI.New: IPokeAPI;
